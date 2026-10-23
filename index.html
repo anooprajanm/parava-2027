@@ -294,9 +294,26 @@ tbody tr:last-child td{border-bottom:0}
 .contact-grid a{color:var(--head);font-weight:600}
 @media (max-width:860px){.contact-grid{grid-template-columns:1fr}}
 .view[hidden]{display:none}
+
+/* ---------- intro: disc arcs in with a trail, bursts into fireworks, logo holds ---------- */
+.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;cursor:pointer;
+  background:color-mix(in srgb,var(--tea) 72%,transparent);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  transition:opacity .6s ease-in,visibility .6s}
+.intro-skip .intro,.intro.done{display:none}
+.intro.out{opacity:0;visibility:hidden}
+.intro canvas{position:absolute;inset:0;width:100%;height:100%}
+.intro .mark{position:relative;width:min(72vw,340px);max-height:62vh;object-fit:contain;opacity:0;transform:scale(.6);
+  filter:drop-shadow(0 0 22px rgba(244,248,245,.28));transition:opacity .7s ease-out,transform .9s cubic-bezier(.2,1.3,.4,1)}
+.intro .mark.show{opacity:1;transform:scale(1)}
+@media (prefers-reduced-motion:reduce){.intro{display:none}}
 </style>
 </head>
 <body>
+<script>try{if(sessionStorage.getItem("parava-intro"))document.documentElement.classList.add("intro-skip")}catch(e){}</script>
+<div class="intro" aria-hidden="true" title="Tap to skip">
+  <canvas></canvas>
+  <img class="mark" src="assets/logo-intro.png" alt="">
+</div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <symbol id="hills" viewBox="0 0 1280 120" preserveAspectRatio="none">
     <path style="fill:var(--hill-1)" d="M0 30 C140 8 260 14 380 30 S640 4 790 24 S1060 10 1280 26 V120 H0Z"/>
@@ -416,6 +433,81 @@ function tick(){
   document.querySelectorAll("[data-cd]").forEach(el=>{const k=el.dataset.cd;el.textContent=k==="d"?v.d:String(v[k]).padStart(2,"0");});
 }
 tick();setInterval(tick,30000);
+// Intro: plays once per session. render(t) is a pure function of time, so #intro-t=<ms> freezes a frame for checking.
+document.querySelectorAll(".intro").forEach(intro=>{
+  const FLY=1700, LOGO=2250, HOLD=3000, FADE=600, TAIL=520, LIFE=1800;
+  const cv=intro.querySelector("canvas"), ctx=cv.getContext("2d"), mark=intro.querySelector(".mark");
+  const freeze=/intro-t=(\d+)/.exec(location.hash);
+  let W,H,S,raf,start,ended=false;
+  const end=()=>{if(ended)return;ended=true;cancelAnimationFrame(raf);intro.classList.add("done");try{sessionStorage.setItem("parava-intro","1")}catch(e){}};
+  if(!freeze&&(document.documentElement.classList.contains("intro-skip")||matchMedia("(prefers-reduced-motion: reduce)").matches)){end();return;}
+  if(freeze)document.documentElement.classList.remove("intro-skip");
+  intro.addEventListener("click",end);
+  const size=()=>{const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;S=Math.min(W,H);cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);};
+  size();addEventListener("resize",size);
+  // disc path: quadratic curve from off-screen bottom-left, over the top-left, into the centre
+  const path=u=>{const e=1-Math.pow(1-u,2.4),a=[-.12*W,1.08*H],b=[.06*W,.02*H],c=[.5*W,.5*H],m=1-e;
+    return [m*m*a[0]+2*m*e*b[0]+e*e*c[0], m*m*a[1]+2*m*e*b[1]+e*e*c[1]];};
+  // firework bursts with seeded particles so every frame is reproducible
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const COLS=["#F2AE45","#F6C878","#E9A6BA","#F4F8F5","#83B098","#DCEDE3"];
+  const bursts=[[0,.5,.5,180,1.25],[280,.24,.3,90,.8],[480,.76,.32,90,.8],[700,.36,.72,70,.7],[880,.66,.7,70,.7]].map(([dt,x,y,n,s])=>({
+    t:FLY+dt,x,y,s,p:Array.from({length:n},()=>{const a=rnd()*Math.PI*2,v=(.45+rnd()*.75)*s;return{vx:Math.cos(a)*v,vy:Math.sin(a)*v,c:COLS[rnd()*COLS.length|0],w:1.8+rnd()*2.2,f:rnd()*6};})}));
+  const K=2.4,G=.16; // drag per second, gravity in S-units per s^2
+  const ppos=(b,q,s)=>{const d=(1-Math.exp(-K*s))/K;return[b.x*W+q.vx*S*d,b.y*H+q.vy*S*d+G*S*s*s*.5];};
+  function disc(x,y,r,spin,tilt){
+    ctx.save();ctx.translate(x,y);ctx.rotate(tilt);ctx.scale(1,.42);
+    ctx.shadowColor="rgba(242,174,69,.8)";ctx.shadowBlur=18;
+    ctx.fillStyle="#FBFCFA";ctx.beginPath();ctx.arc(0,0,r,0,7);ctx.fill();ctx.shadowBlur=0;
+    ctx.strokeStyle="#83B098";ctx.lineWidth=r*.05;ctx.stroke();
+    ctx.fillStyle="#F2AE45";ctx.beginPath();ctx.arc(0,0,r*.46,0,7);ctx.fill();
+    ctx.strokeStyle="#1F4A3A";ctx.lineWidth=r*.11;ctx.lineCap="round";ctx.beginPath();ctx.arc(0,0,r*.46,spin,spin+1.6);ctx.stroke();
+    ctx.restore();
+  }
+  function render(t){
+    ctx.clearRect(0,0,W,H);
+    const r=S*.075;
+    // shooting-star tail: samples behind the disc, tapering and fading
+    const tailEnd=Math.min(t,FLY), tailStart=Math.max(0,t-TAIL);
+    if(tailEnd>tailStart){
+      ctx.lineCap="round";
+      for(let i=0;i<28;i++){
+        const t0=tailStart+(tailEnd-tailStart)*i/28, t1=tailStart+(tailEnd-tailStart)*(i+1)/28;
+        const age=(t-t1)/TAIL, k=1-Math.min(1,age); if(k<=0)continue;
+        const p0=path(t0/FLY),p1=path(t1/FLY);
+        ctx.strokeStyle=`rgba(${k>.6?"255,236,200":"242,174,69"},${(k*k*.85).toFixed(3)})`;
+        ctx.lineWidth=r*(.15+k*1.1)*(.55+.45*t1/FLY);
+        ctx.shadowColor="rgba(242,174,69,.6)";ctx.shadowBlur=12*k;
+        ctx.beginPath();ctx.moveTo(p0[0],p0[1]);ctx.lineTo(p1[0],p1[1]);ctx.stroke();
+      }
+      ctx.shadowBlur=0;
+    }
+    if(t<FLY){
+      const u=t/FLY,[x,y]=path(u),[x2,y2]=path(Math.min(1,u+.01));
+      disc(x,y,r*(.55+.45*u),t/55,Math.atan2(y2-y,x2-x)*.25);
+    }
+    // flash at the main burst
+    const ft=t-FLY;if(ft>=0&&ft<320){const a=1-ft/320,g=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,S*.45);
+      g.addColorStop(0,`rgba(255,240,210,${.75*a})`);g.addColorStop(1,"rgba(255,240,210,0)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+    // fireworks: each particle draws a short streak from where it was 130ms ago
+    ctx.lineCap="round";ctx.globalCompositeOperation="lighter";
+    for(const b of bursts){const s=(t-b.t)/1000;if(s<0||s*1000>LIFE)continue;
+      const fade=1-Math.pow(s*1000/LIFE,1.6);
+      for(const q of b.p){const[a0,b0]=ppos(b,q,Math.max(0,s-.13)),[a1,b1]=ppos(b,q,s);
+        const tw=.65+.35*Math.sin(s*28+q.f);
+        ctx.globalAlpha=Math.max(0,fade*tw);ctx.strokeStyle=q.c;ctx.lineWidth=q.w;
+        ctx.beginPath();ctx.moveTo(a0,b0);ctx.lineTo(a1,b1);ctx.stroke();}
+    }
+    ctx.globalAlpha=1;ctx.globalCompositeOperation="source-over";
+    mark.classList.toggle("show",t>=LOGO);
+    intro.classList.toggle("out",t>=LOGO+HOLD);
+  }
+  if(freeze){mark.style.transition="none";intro.style.transition="none";render(+freeze[1]);return;}
+  const loop=now=>{start??=now;const t=now-start;render(t);if(t<LOGO+HOLD+FADE)raf=requestAnimationFrame(loop);else end();};
+  raf=requestAnimationFrame(loop);
+  // safety net: never leave the overlay up if animation frames stall (background tab, power saving)
+  setTimeout(()=>{intro.classList.add("out");setTimeout(end,FADE);},LOGO+HOLD+1500);
+});
 document.querySelectorAll(".menu-btn").forEach(btn=>{
   const menu=btn.nextElementSibling;
   btn.addEventListener("click",()=>{const o=menu.classList.toggle("open");btn.setAttribute("aria-expanded",o);});
