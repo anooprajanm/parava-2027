@@ -18,6 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/logo.png">
+<link rel="preload" as="image" href="assets/logo-intro.png" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=Gochi+Hand&display=swap" rel="stylesheet">
@@ -312,7 +313,7 @@ tbody tr:last-child td{border-bottom:0}
 <script>try{if(sessionStorage.getItem("parava-intro"))document.documentElement.classList.add("intro-skip")}catch(e){}</script>
 <div class="intro" aria-hidden="true" title="Tap to skip">
   <canvas></canvas>
-  <img class="mark" src="assets/logo-intro.png" alt="">
+  <img class="mark" src="assets/logo-intro.png" alt="" fetchpriority="high">
 </div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <symbol id="hills" viewBox="0 0 1280 120" preserveAspectRatio="none">
