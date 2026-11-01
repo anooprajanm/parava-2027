@@ -25,11 +25,12 @@
     main.classList.toggle("throw-narrow",narrow);
     svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.style.height=H+"px";
     mask.setAttribute("width",W);mask.setAttribute("height",H);
-    // on phones the throw hugs the left gutter; on wider screens it swings between anchors like a hyzer
-    const P=anchors.map(a=>{const[x,y]=point(a);return[narrow?10:Math.min(Math.max(x,24),W-24),y];});
+    // it swings between anchors like a hyzer; on phones it keeps to the screen and swings a little less
+    const edge=narrow?14:24;
+    const P=anchors.map(a=>{const[x,y]=point(a);return[Math.min(Math.max(x,edge),W-edge),y];});
     let d=`M${P[0][0]},${P[0][1]}`;
     for(let i=0;i<P.length-1;i++){
-      const[x0,y0]=P[i],[x1,y1]=P[i+1],dy=y1-y0,sw=narrow?(i%2?6:-6):W*.2*(i%2?-1:1);
+      const[x0,y0]=P[i],[x1,y1]=P[i+1],dy=y1-y0,sw=W*(narrow?.16:.2)*(i%2?-1:1);
       d+=` C${x0+sw},${y0+dy*.35} ${x1+sw*.6},${y1-dy*.4} ${x1},${y1}`;
     }
     line.setAttribute("d",d);reveal.setAttribute("d",d);
