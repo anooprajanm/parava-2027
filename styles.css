@@ -288,6 +288,16 @@ footer h3{font-size:1rem;margin-bottom:.6rem;color:#F4F8F5}
 footer ul{list-style:none;padding:0;margin:0;display:grid;gap:.4rem}
 footer a{text-decoration:none;color:#DCEDE3}
 footer a:hover{color:var(--disc);text-decoration:underline}
+/* follow strip: the one place both Instagram accounts are asked for, on every page */
+footer .follow{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1rem;padding-bottom:2rem;border-bottom:1px solid rgba(220,237,227,.2)}
+footer .follow p{margin:0 auto 0 0;font-family:var(--font-h);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.7rem);color:#F4F8F5;letter-spacing:-.01em}
+.btn-follow{display:inline-flex;align-items:center;gap:.55rem;border-color:rgba(220,237,227,.4);color:#F4F8F5}
+footer a.btn-follow{color:#F4F8F5;text-decoration:none}
+footer a.btn-follow:hover{background:rgba(220,237,227,.12);color:#fff;text-decoration:none}
+.ig{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:560px){footer .follow p{flex-basis:100%}footer .follow .btn{flex:1 1 auto;justify-content:center;font-size:.95rem;padding:.8rem 1rem}}
+.more-ig{margin-left:1.1rem;font-weight:600;color:var(--head);text-underline-offset:4px}
+.more-ig:hover{color:var(--tea)}
 .legal{grid-column:1/-1;border-top:1px solid rgba(220,237,227,.2);padding-top:1.25rem;font-size:.88rem;color:#B9D3C3}
 @media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -416,6 +426,43 @@ footer a{transition:color .25s var(--ease)}
 .vol .split{align-items:start}
 .vol-form.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(1.25rem,3vw,2rem)}
 .vol-form.panel h3{font-size:1.5rem;margin-bottom:.25rem}
+
+/* ---------- about: the crew as names and roles, no placeholder avatars ---------- */
+.crew-list{margin:2rem 0 0;max-width:720px;border-top:1px solid var(--line)}
+.crew-list > div{display:grid;grid-template-columns:minmax(0,14rem) 1fr;gap:1rem;align-items:baseline;padding:1.1rem 0;border-bottom:1px solid var(--line)}
+.crew-list dt{color:var(--muted);font-size:.95rem}
+.crew-list dd{margin:0;font-family:var(--font-h);font-weight:700;font-size:clamp(1.3rem,2.2vw,1.6rem);color:var(--head);letter-spacing:-.01em}
+@media (max-width:560px){.crew-list > div{grid-template-columns:1fr;gap:.15rem}}
+
+/* ---------- venue: captioned map, travel with line icons ---------- */
+.venue figure.map{margin:0}
+.venue .map figcaption{padding:.75rem 1rem;font-size:.9rem;color:var(--muted);background:var(--surface);border-top:1px solid var(--line)}
+.feat.travel h3{display:flex;align-items:center;gap:.6rem}
+.ic{width:26px;height:26px;flex:none;fill:none;stroke:var(--sage);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- families: the big number gets the family accent ---------- */
+.family .big{display:inline-block;padding-bottom:.15rem;border-bottom:6px solid var(--blush)}
+.family .big-cap{margin-top:.75rem}
+.fam li{padding-bottom:1rem;border-bottom:1px solid var(--line)}
+.fam li:last-child{border-bottom:0}
+
+/* ---------- faq: questions beside a panel that stays in view ---------- */
+.faq-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,20rem);gap:3rem;align-items:start}
+.faq-layout .faq{margin-top:0;max-width:none}
+.ask{position:sticky;top:calc(env(safe-area-inset-top,0px) + 6rem);background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:1.75rem}
+.ask h2{font-size:1.6rem;max-width:none}
+.ask p{margin:.5rem 0 1.25rem;color:var(--muted)}
+.ask .ask-alt{margin:1rem 0 0;font-size:.95rem}
+@media (max-width:860px){.faq-layout{grid-template-columns:1fr}.ask{position:static}}
+
+/* ---------- contact: large links, each a whole tappable row ---------- */
+.contact-list{list-style:none;margin:0 0 3rem;padding:0;border-top:1px solid var(--line)}
+.contact-list li{border-bottom:1px solid var(--line)}
+.contact-list a,.contact-list li > div{display:grid;gap:.2rem;padding:1.15rem .75rem;margin:0 -.75rem;border-radius:14px;text-decoration:none;
+  transition:background-color .25s var(--ease)}
+.contact-list a:hover{background:var(--surface)}
+.contact-list small{color:var(--muted);font-size:.9rem}
+.contact-list b{font-family:var(--font-h);font-weight:700;font-size:clamp(1.3rem,3.2vw,2rem);color:var(--head);letter-spacing:-.015em;overflow-wrap:anywhere}
 
 /* ---------- 404 and privacy ---------- */
 .lost .pic img{object-position:50% 30%}
