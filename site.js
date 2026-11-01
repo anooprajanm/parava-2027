@@ -78,7 +78,9 @@ document.querySelectorAll(".vol-form").forEach(f=>{
     if(!m){m=document.createElement("small");m.className="err";m.id="err-"+input.name;m.setAttribute("aria-live","polite");input.insertAdjacentElement("afterend",m);
       input.setAttribute("aria-describedby",m.id);}
     m.textContent=text;input.setAttribute("aria-invalid",text?"true":"false");return !text;};
-  const checks={name:v=>v.trim()?"":"Add your name.",email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())?"":"Enter a valid email, like name@example.com."};
+  const checks={name:v=>v.trim()?"":"Add your name.",email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())?"":"Enter a valid email, like name@example.com.",
+    // phone is optional: empty passes; otherwise digits, spaces, + and - with 7 to 15 digits
+    phone:v=>{v=v.trim();const n=v.replace(/\D/g,"").length;return !v||(/^\+?[\d\s-]+$/.test(v)&&n>=7&&n<=15)?"":"Enter a valid phone number, like +91 98765 43210.";}};
   Object.keys(checks).forEach(n=>f[n].addEventListener("input",()=>{if(f[n].getAttribute("aria-invalid")==="true")msg(f[n],checks[n](f[n].value));}));
   f.addEventListener("submit",e=>{
     e.preventDefault();t.classList.remove("show");

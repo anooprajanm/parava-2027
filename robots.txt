@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://paravaultimate.com/sitemap.xml
