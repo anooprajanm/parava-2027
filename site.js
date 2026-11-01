@@ -18,24 +18,26 @@ document.querySelectorAll(".menu-btn").forEach(btn=>{
   matchMedia("(min-width:1041px)").addEventListener("change",e=>{if(e.matches)set(false);});
 });
 document.querySelectorAll('a[data-ph]').forEach(a=>a.addEventListener("click",e=>e.preventDefault()));
-// Scroll reveals: sections below the first screen rise and fade in once; grid items follow each other
-// (the homepage opts out: its one moving element is the throw path in home.js)
-if(!document.querySelector("main.home")&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&"IntersectionObserver" in window){
-  // also reveal anything already scrolled past (fast flicks, anchor jumps), so nothing can stay hidden above the viewport
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting||e.boundingClientRect.top<0){e.target.classList.add("in");io.unobserve(e.target);}}),{rootMargin:"0px 0px -8% 0px"});
-  const GRIDS=".cards,.gallery,.days,.tiers,.crew,.contact-grid,.stats,.feat";
-  document.querySelectorAll("main section > .wrap").forEach(w=>{
-    const targets=[...w.children].flatMap(c=>c.matches(GRIDS)?[...c.children]:[c]);
-    targets.forEach(el=>{
-      if(el.getBoundingClientRect().top<innerHeight)return;   // already on screen: never hide it
-      const g=el.parentElement.matches(GRIDS)?[...el.parentElement.children].indexOf(el):0;
-      el.style.setProperty("--rd",Math.min(g*80,400)+"ms");el.classList.add("reveal");io.observe(el);
-    });
-  });
-  // backstop for when the observer is late or throttled: once per finished scroll (not per frame), show anything on or above the screen
-  const sweep=()=>document.querySelectorAll(".reveal:not(.in)").forEach(el=>{if(el.getBoundingClientRect().top<innerHeight){el.classList.add("in");io.unobserve(el);}});
-  addEventListener("scrollend",sweep,{passive:true});addEventListener("hashchange",sweep);addEventListener("load",sweep);
-}
+// Page titles: a short dashed throw from the handwritten note, over the title, landing as a disc beside it.
+// Drawn once by CSS animation; skipped when the title fills the column and there is no room for the disc.
+document.querySelectorAll(".pagehead h1").forEach(h=>{
+  const col=h.parentElement,note=col.querySelector(".kicker");if(!note)return;
+  const NS="http://www.w3.org/2000/svg",svg=document.createElementNS(NS,"svg");svg.classList.add("title-throw");svg.setAttribute("aria-hidden","true");
+  col.append(svg);
+  const draw=()=>{
+    svg.innerHTML="";
+    const c=col.getBoundingClientRect(),r=document.createRange();r.selectNodeContents(note);
+    const n=r.getBoundingClientRect(),t=h.getBoundingClientRect(),lh=parseFloat(getComputedStyle(h).lineHeight)||t.height;
+    const x0=n.right-c.left+10,y0=n.top-c.top+n.height/2,x1=t.right-c.left+26,y1=t.top-c.top+lh*.45;
+    if(x1+14>innerWidth-c.left-8||x1-x0<40)return;
+    const d=`M${x0},${y0} C${x0+(x1-x0)*.45},${y0-46} ${x1+8},${y0-34} ${x1},${y1}`;
+    svg.innerHTML=`<defs><mask id="tt-${h.textContent.length}" maskUnits="userSpaceOnUse" x="-50" y="-100" width="${c.width+200}" height="${c.height+200}"><path class="reveal-path" d="${d}"/></mask></defs>`+
+      `<path d="${d}" mask="url(#tt-${h.textContent.length})"/><ellipse cx="${x1}" cy="${y1}" rx="9" ry="4"/>`;
+    const m=svg.querySelector(".reveal-path");m.style.setProperty("--len",Math.ceil(m.getTotalLength()));
+  };
+  draw();document.fonts&&document.fonts.ready.then(draw);
+  let w=innerWidth;addEventListener("resize",()=>{if(innerWidth!==w){w=innerWidth;draw();}});
+});
 // Volunteer form: inline, specific errors per field; still sends through the visitor's email app
 document.querySelectorAll(".vol-form").forEach(f=>{
   const t=f.querySelector(".toast");

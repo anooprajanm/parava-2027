@@ -17,8 +17,9 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/logo.png">
-<link rel="preload" as="image" href="assets/logo-intro.png" fetchpriority="high">
+<link rel="icon" type="image/svg+xml" href="assets/logo-2027.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" as="image" href="assets/logo-2027.svg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=Gochi+Hand&display=swap" rel="stylesheet">
@@ -33,9 +34,8 @@
 .intro canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .intro canvas.fx{z-index:2}
 .intro-stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(.5rem,2.2vh,1.2rem);transform:translateY(-5vh)}
-.intro-logo{--lw:min(62vw,300px,34vh);position:relative;width:var(--lw);aspect-ratio:493/568;transform-origin:0 0;will-change:transform}
+.intro-logo{--lw:min(62vw,300px,34vh);position:relative;width:var(--lw);aspect-ratio:853.3/979.1;transform-origin:0 0;will-change:transform}
 .intro .mark{display:block;width:100%;height:100%;object-fit:contain;-webkit-mask-image:linear-gradient(transparent,transparent);mask-image:linear-gradient(transparent,transparent)}
-.intro-yr{position:absolute;left:72.4%;top:70.5%;font-family:var(--font-w);color:var(--sage);font-size:calc(var(--lw) * .1428);line-height:1;opacity:0}
 .intro-tag{margin:0;text-align:center;line-height:1.25}
 .intro-tag span{display:block;opacity:0}
 .intro-tag .d{font-family:var(--font-h);font-weight:800;font-size:clamp(1.3rem,3.4vh,1.9rem);color:#F4F8F5;letter-spacing:-.01em}
@@ -50,7 +50,7 @@
 <div class="intro" aria-hidden="true" title="Tap to skip">
   <canvas class="bg"></canvas>
   <div class="intro-stage">
-    <div class="intro-logo"><img class="mark" src="assets/logo-intro.png" alt="" fetchpriority="high"><span class="intro-yr">’27</span></div>
+    <div class="intro-logo"><img class="mark" src="assets/logo-2027.svg" alt="" fetchpriority="high"></div>
     <p class="intro-tag"><span class="d">2–4 April 2027</span><span class="v">High Range Club · Munnar</span></p>
   </div>
   <canvas class="fx"></canvas>
@@ -66,7 +66,7 @@
 </defs></svg>
 <nav class="nav" aria-label="Main">
   <div class="wrap">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt=""><b>Parava</b><span>’27</span></a>
+    <a class="brand" href="index.html"><img src="assets/logo-2027.svg" alt=""><b>Parava</b><span>’27</span></a>
     <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></button>
     <ul id="menu"><li><a href="about.html">About</a></li><li><a href="tournament.html">2027</a></li><li><a href="venue.html">Venue</a></li><li><a href="families.html">Families</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li><li><a href="partners.html">Partners</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li><li><a class="cta" href="tournament.html#register" data-reg>Register</a></li></ul>
   </div>
@@ -75,7 +75,7 @@
 <header class="hero home-hero">
   <div class="wrap">
     <div>
-      <div class="logo"><img src="assets/logo.png" alt="Parava logo"><span class="yr">’27</span></div>
+      <div class="logo"><img src="assets/logo-2027.svg" alt="Parava logo"></div>
       <p class="kicker">the fourth edition</p>
       <h1>Elite ultimate in the tea gardens of Munnar</h1>
       <p class="when"><strong>2–4 April 2027</strong>High Range Club, Munnar. Hosted by Ultimate Frisbee Kochi.</p>
@@ -143,8 +143,9 @@
 </section>
 </main>
 <footer>
+  <div class="hills" aria-hidden="true"><svg><use href="#hills"/></svg></div>
   <div class="wrap">
-    <div class="logo"><img src="assets/logo.png" alt="Parava logo" loading="lazy"><span class="yr">’27</span></div>
+    <div class="logo"><img src="assets/logo-2027.svg" alt="Parava logo" loading="lazy"></div>
     <div>
       <h3>Explore</h3>
       <ul><li><a href="about.html">About</a></li><li><a href="tournament.html">Parava 2027</a></li><li><a href="venue.html">Venue</a></li><li><a href="families.html">Families</a></li><li><a href="gallery.html">Gallery</a></li></ul>
@@ -166,7 +167,7 @@ document.querySelectorAll(".intro").forEach(intro=>{
   const FLY=1250, CATCH=FLY, REVEAL=650, HAND=2500, HANDDUR=700, END=HAND+HANDDUR;
   const root=document.documentElement;
   const bg=intro.querySelector("canvas.bg"), fx=intro.querySelector("canvas.fx"), b=bg.getContext("2d"), c=fx.getContext("2d");
-  const logo=intro.querySelector(".intro-logo"), mark=intro.querySelector(".mark"), yr=intro.querySelector(".intro-yr");
+  const logo=intro.querySelector(".intro-logo"), mark=intro.querySelector(".mark");
   const tags=intro.querySelectorAll(".intro-tag span"), hint=intro.querySelector(".intro-hint");
   const hero=document.querySelector(".hero .logo"), heroImg=hero&&hero.querySelector("img");
   const freeze=/intro-t=(\d+)/.exec(location.hash), video=/video/.test(location.hash);
@@ -179,7 +180,7 @@ document.querySelectorAll(".intro").forEach(intro=>{
   // skip: click/tap anywhere or any key; fades out quickly instead of cutting
   const skip=()=>{if(ended)return;cancelAnimationFrame(raf);intro.classList.add("out");if(hero)hero.style.opacity="";setTimeout(end,350);};
   intro.addEventListener("click",skip);addEventListener("keydown",skip,{once:true});
-  // geometry: the logo art box now, and where the hero logo's art sits (logo.png has 27/24px padding in a 534x606 image)
+  // geometry: the logo art box now, and where the hero logo sits (both use the same tightly cropped logo-2027.svg)
   function size(){
     const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;S=Math.min(W,H);
     for(const cv of [bg,fx]){cv.width=W*d;cv.height=H*d;cv.getContext("2d").setTransform(d,0,0,d,0,0);}
@@ -187,14 +188,14 @@ document.querySelectorAll(".intro").forEach(intro=>{
     base={x:r.left,y:r.top,w:r.width,h:r.height};
     target=null;
     if(heroImg){const h=heroImg.getBoundingClientRect();
-      if(h.width>0&&h.bottom>0&&h.top<H)target={x:h.left+h.width*27/534,y:h.top+h.height*24/606,w:h.width*486/534};}
+      if(h.width>0&&h.bottom>0&&h.top<H)target={x:h.left,y:h.top,w:h.width};}
   }
   size();addEventListener("resize",size);
   // easing helpers
   const cl=v=>v<0?0:v>1?1:v, seg=(t,a,d)=>cl((t-a)/d);
   const oCub=x=>1-Math.pow(1-x,3), ioCub=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, oBack=x=>1+2.2*Math.pow(x-1,3)+1.2*Math.pow(x-1,2);
-  // the disc lands exactly on the logo's own disc (centre 48.3%/4.05% of the art, 13.4% of its width, ellipse 0.45)
-  const disc0=()=>({x:base.x+base.w*.4828,y:base.y+base.h*.0405,r:base.w*.067});
+  // the disc lands exactly on the logo's own disc (centre 48.8%/4.7% of the art, 13.6% of its width, ellipse 0.5)
+  const disc0=()=>({x:base.x+base.w*.4876,y:base.y+base.h*.0469,r:base.w*.0682});
   // flight: cubic Bezier thrown from behind the camera (bottom-left), hyzers out right and hooks back into the catch
   function path(u){const T=disc0(),P=[[-.14*W,.98*H],[.28*W,.06*H],[1.12*W,-.02*H],[T.x,T.y]],m=1-u;
     return[m*m*m*P[0][0]+3*m*m*u*P[1][0]+3*m*u*u*P[2][0]+u*u*u*P[3][0], m*m*m*P[0][1]+3*m*m*u*P[1][1]+3*m*u*u*P[2][1]+u*u*u*P[3][1]];}
@@ -262,7 +263,7 @@ document.querySelectorAll(".intro").forEach(intro=>{
       rg.addColorStop(0,`rgba(255,240,210,${.7*fl})`);rg.addColorStop(1,"rgba(255,240,210,0)");c.fillStyle=rg;c.fillRect(T.x-T.r*9,T.y-T.r*9,T.r*18,T.r*18);
       [[0,"242,174,69",7],[90,"220,237,227",10]].forEach(([d,col,m])=>{const k=seg(dt,d,600);if(k<=0||k>=1)return;
         const R=T.r*(1.1+m*oCub(k));c.strokeStyle=`rgba(${col},${(1-k)*.85})`;c.lineWidth=Math.max(1,T.r*.22*(1-k));
-        c.beginPath();c.ellipse(T.x,T.y,R,R*.45,0,0,7);c.stroke();});
+        c.beginPath();c.ellipse(T.x,T.y,R,R*.5,0,0,7);c.stroke();});
       const ss=dt/1000;
       if(ss<.9){const d=(1-Math.exp(-3.2*ss))/3.2,fade=1-Math.pow(ss/.9,1.4),d0=(1-Math.exp(-3.2*Math.max(0,ss-.06)))/3.2;
         c.lineCap="round";for(const p of sparks){c.globalAlpha=fade;c.strokeStyle=p.c;c.lineWidth=p.w;
@@ -277,7 +278,7 @@ document.querySelectorAll(".intro").forEach(intro=>{
     const discA=1-seg(t,CATCH+450,250);
     if(discA>0){
       const st=(v)=>{const[x,y]=path(v),[x2,y2]=path(Math.min(1,v+.01)),bank=Math.atan2(y2-y,x2-x)*.22*Math.pow(1-v,.7);
-        return{x,y,r:T.r*scaleAt(v),ratio:.45+.14*Math.pow(1-v,1.3)+.025*Math.sin(v*14)*(1-v),bank};};
+        return{x,y,r:T.r*scaleAt(v),ratio:.5+.12*Math.pow(1-v,1.3)+.025*Math.sin(v*14)*(1-v),bank};};
       if(t<CATCH)for(let k=4;k>=1;k--){const v=Math.max(0,u-k*.011*(1-u*.8)),q=st(v);drawDisc(q.x,q.y,q.r,q.ratio,q.bank,t*.05-k*.35,.13*(5-k)/4);}
       const q=st(u);
       c.save();c.shadowColor="rgba(242,174,69,.75)";c.shadowBlur=T.r*(1.2+scaleAt(u));
@@ -292,7 +293,6 @@ document.querySelectorAll(".intro").forEach(intro=>{
     const mk=k>=1?"none":`radial-gradient(circle at ${(T.x-base.x).toFixed(1)}px ${(T.y-base.y).toFixed(1)}px,#000 ${Math.max(0,R-base.w*.14).toFixed(1)}px,transparent ${R.toFixed(1)}px)`;
     mark.style.webkitMaskImage=mk;mark.style.maskImage=mk;
     const pop=k>0?.9+.1*oBack(k):.9;
-    const ky=seg(t,CATCH+420,320);yr.style.opacity=ky;yr.style.transform=`translateY(${(1-oBack(ky))*12}px) rotate(${-10*(1-ky)}deg) scale(${.6+.4*oBack(ky)})`;
     const h=video?0:ioCub(seg(t,HAND,HANDDUR));
     // hand-off: the logo flies into the hero logo while the scene drops away (falls back to scale + fade if the hero logo isn't on screen)
     let tf=`translate(${base.w*(1-pop)/2}px,${base.h*(1-pop)*.04}px) scale(${pop})`;
