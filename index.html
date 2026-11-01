@@ -296,24 +296,35 @@ tbody tr:last-child td{border-bottom:0}
 @media (max-width:860px){.contact-grid{grid-template-columns:1fr}}
 .view[hidden]{display:none}
 
-/* ---------- intro: disc arcs in with a trail, bursts into fireworks, logo holds ---------- */
-.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;cursor:pointer;
-  background:color-mix(in srgb,var(--tea) 72%,transparent);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
-  transition:opacity .6s ease-in,visibility .6s}
+/* ---------- intro: disc is thrown past the camera, hyzers across the tea hills, is caught as the logo's own disc, logo reveals, then flies into the hero logo ---------- */
+.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;cursor:pointer;background:#1F4A3A;
+  -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 .intro-skip .intro,.intro.done{display:none}
-.intro.out{opacity:0;visibility:hidden}
-.intro canvas{position:absolute;inset:0;width:100%;height:100%}
-.intro .mark{position:relative;width:min(72vw,340px);max-height:62vh;object-fit:contain;opacity:0;transform:scale(.6);
-  filter:drop-shadow(0 0 22px rgba(244,248,245,.28));transition:opacity .7s ease-out,transform .9s cubic-bezier(.2,1.3,.4,1)}
-.intro .mark.show{opacity:1;transform:scale(1)}
+.intro.out{opacity:0;visibility:hidden;transition:opacity .35s ease-in,visibility .35s}
+.intro canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.intro canvas.fx{z-index:2}
+.intro-stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(.5rem,2.2vh,1.2rem);transform:translateY(-5vh)}
+.intro-logo{--lw:min(62vw,300px,34vh);position:relative;width:var(--lw);aspect-ratio:493/568;transform-origin:0 0;will-change:transform}
+.intro .mark{display:block;width:100%;height:100%;object-fit:contain;-webkit-mask-image:linear-gradient(transparent,transparent);mask-image:linear-gradient(transparent,transparent)}
+.intro-yr{position:absolute;left:72.4%;top:70.5%;font-family:var(--font-w);color:var(--sage);font-size:calc(var(--lw) * .1428);line-height:1;opacity:0}
+.intro-tag{margin:0;text-align:center;line-height:1.25}
+.intro-tag span{display:block;opacity:0}
+.intro-tag .d{font-family:var(--font-h);font-weight:800;font-size:clamp(1.3rem,3.4vh,1.9rem);color:#F4F8F5;letter-spacing:-.01em}
+.intro-tag .v{font-family:var(--font-b);font-weight:600;font-size:clamp(.72rem,1.6vh,.9rem);color:var(--sage);letter-spacing:.18em;text-transform:uppercase;margin-top:.25rem}
+.intro-hint{position:absolute;z-index:3;right:max(1.1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));font-family:var(--font-w);font-size:1.15rem;color:#DCEDE3;opacity:0}
 @media (prefers-reduced-motion:reduce){.intro{display:none}}
 </style>
 </head>
 <body>
 <script>try{if(sessionStorage.getItem("parava-intro"))document.documentElement.classList.add("intro-skip")}catch(e){}</script>
 <div class="intro" aria-hidden="true" title="Tap to skip">
-  <canvas></canvas>
-  <img class="mark" src="assets/logo-intro.png" alt="" fetchpriority="high">
+  <canvas class="bg"></canvas>
+  <div class="intro-stage">
+    <div class="intro-logo"><img class="mark" src="assets/logo-intro.png" alt="" fetchpriority="high"><span class="intro-yr">’27</span></div>
+    <p class="intro-tag"><span class="d">2–4 April 2027</span><span class="v">High Range Club · Munnar</span></p>
+  </div>
+  <canvas class="fx"></canvas>
+  <span class="intro-hint">tap to skip</span>
 </div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <symbol id="hills" viewBox="0 0 1280 120" preserveAspectRatio="none">
@@ -434,80 +445,157 @@ function tick(){
   document.querySelectorAll("[data-cd]").forEach(el=>{const k=el.dataset.cd;el.textContent=k==="d"?v.d:String(v[k]).padStart(2,"0");});
 }
 tick();setInterval(tick,30000);
-// Intro: plays once per session. render(t) is a pure function of time, so #intro-t=<ms> freezes a frame for checking.
+// Intro: plays once per session. render(t) is a pure function of time, so #intro-t=<ms> freezes a frame for checking
+// (add &video to hold on the logo instead of handing off to the page, used to export the video version).
 document.querySelectorAll(".intro").forEach(intro=>{
-  const FLY=1700, LOGO=2250, HOLD=3000, FADE=600, TAIL=520, LIFE=1800;
-  const cv=intro.querySelector("canvas"), ctx=cv.getContext("2d"), mark=intro.querySelector(".mark");
-  const freeze=/intro-t=(\d+)/.exec(location.hash);
-  let W,H,S,raf,start,ended=false;
-  const end=()=>{if(ended)return;ended=true;cancelAnimationFrame(raf);intro.classList.add("done");try{sessionStorage.setItem("parava-intro","1")}catch(e){}};
-  if(!freeze&&(document.documentElement.classList.contains("intro-skip")||matchMedia("(prefers-reduced-motion: reduce)").matches)){end();return;}
-  if(freeze)document.documentElement.classList.remove("intro-skip");
-  intro.addEventListener("click",end);
-  const size=()=>{const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;S=Math.min(W,H);cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);};
+  const FLY=1250, CATCH=FLY, REVEAL=650, HAND=2500, HANDDUR=700, END=HAND+HANDDUR;
+  const root=document.documentElement;
+  const bg=intro.querySelector("canvas.bg"), fx=intro.querySelector("canvas.fx"), b=bg.getContext("2d"), c=fx.getContext("2d");
+  const logo=intro.querySelector(".intro-logo"), mark=intro.querySelector(".mark"), yr=intro.querySelector(".intro-yr");
+  const tags=intro.querySelectorAll(".intro-tag span"), hint=intro.querySelector(".intro-hint");
+  const hero=document.querySelector(".hero .logo"), heroImg=hero&&hero.querySelector("img");
+  const freeze=/intro-t=(\d+)/.exec(location.hash), video=/video/.test(location.hash);
+  let W,H,S,raf,start,ended=false,base,target;
+  if(video){logo.style.setProperty("--lw","min(62vw,44vh)");hint.hidden=true;}  // video export: bigger logo, no hint
+  const end=()=>{if(ended)return;ended=true;cancelAnimationFrame(raf);intro.classList.add("done");
+    if(hero)hero.style.opacity="";removeEventListener("resize",size);try{sessionStorage.setItem("parava-intro","1")}catch(e){}};
+  if(!freeze&&(root.classList.contains("intro-skip")||matchMedia("(prefers-reduced-motion: reduce)").matches)){end();return;}
+  if(freeze)root.classList.remove("intro-skip");
+  // skip: click/tap anywhere or any key; fades out quickly instead of cutting
+  const skip=()=>{if(ended)return;cancelAnimationFrame(raf);intro.classList.add("out");if(hero)hero.style.opacity="";setTimeout(end,350);};
+  intro.addEventListener("click",skip);addEventListener("keydown",skip,{once:true});
+  // geometry: the logo art box now, and where the hero logo's art sits (logo.png has 27/24px padding in a 534x606 image)
+  function size(){
+    const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;S=Math.min(W,H);
+    for(const cv of [bg,fx]){cv.width=W*d;cv.height=H*d;cv.getContext("2d").setTransform(d,0,0,d,0,0);}
+    const tr=logo.style.transform;logo.style.transform="none";const r=logo.getBoundingClientRect();logo.style.transform=tr;
+    base={x:r.left,y:r.top,w:r.width,h:r.height};
+    target=null;
+    if(heroImg){const h=heroImg.getBoundingClientRect();
+      if(h.width>0&&h.bottom>0&&h.top<H)target={x:h.left+h.width*27/534,y:h.top+h.height*24/606,w:h.width*486/534};}
+  }
   size();addEventListener("resize",size);
-  // disc path: quadratic curve from off-screen bottom-left, over the top-left, into the centre
-  const path=u=>{const e=1-Math.pow(1-u,2.4),a=[-.12*W,1.08*H],b=[.06*W,.02*H],c=[.5*W,.5*H],m=1-e;
-    return [m*m*a[0]+2*m*e*b[0]+e*e*c[0], m*m*a[1]+2*m*e*b[1]+e*e*c[1]];};
-  // firework bursts with seeded particles so every frame is reproducible
-  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
-  const COLS=["#F2AE45","#F6C878","#E9A6BA","#F4F8F5","#83B098","#DCEDE3"];
-  const bursts=[[0,.5,.5,180,1.25],[280,.24,.3,90,.8],[480,.76,.32,90,.8],[700,.36,.72,70,.7],[880,.66,.7,70,.7]].map(([dt,x,y,n,s])=>({
-    t:FLY+dt,x,y,s,p:Array.from({length:n},()=>{const a=rnd()*Math.PI*2,v=(.45+rnd()*.75)*s;return{vx:Math.cos(a)*v,vy:Math.sin(a)*v,c:COLS[rnd()*COLS.length|0],w:1.8+rnd()*2.2,f:rnd()*6};})}));
-  const K=2.4,G=.16; // drag per second, gravity in S-units per s^2
-  const ppos=(b,q,s)=>{const d=(1-Math.exp(-K*s))/K;return[b.x*W+q.vx*S*d,b.y*H+q.vy*S*d+G*S*s*s*.5];};
-  function disc(x,y,r,spin,tilt){
-    ctx.save();ctx.translate(x,y);ctx.rotate(tilt);ctx.scale(1,.42);
-    ctx.shadowColor="rgba(242,174,69,.8)";ctx.shadowBlur=18;
-    ctx.fillStyle="#FBFCFA";ctx.beginPath();ctx.arc(0,0,r,0,7);ctx.fill();ctx.shadowBlur=0;
-    ctx.strokeStyle="#83B098";ctx.lineWidth=r*.05;ctx.stroke();
-    ctx.fillStyle="#F2AE45";ctx.beginPath();ctx.arc(0,0,r*.46,0,7);ctx.fill();
-    ctx.strokeStyle="#1F4A3A";ctx.lineWidth=r*.11;ctx.lineCap="round";ctx.beginPath();ctx.arc(0,0,r*.46,spin,spin+1.6);ctx.stroke();
-    ctx.restore();
+  // easing helpers
+  const cl=v=>v<0?0:v>1?1:v, seg=(t,a,d)=>cl((t-a)/d);
+  const oCub=x=>1-Math.pow(1-x,3), ioCub=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, oBack=x=>1+2.2*Math.pow(x-1,3)+1.2*Math.pow(x-1,2);
+  // the disc lands exactly on the logo's own disc (centre 48.3%/4.05% of the art, 13.4% of its width, ellipse 0.45)
+  const disc0=()=>({x:base.x+base.w*.4828,y:base.y+base.h*.0405,r:base.w*.067});
+  // flight: cubic Bezier thrown from behind the camera (bottom-left), hyzers out right and hooks back into the catch
+  function path(u){const T=disc0(),P=[[-.14*W,.98*H],[.28*W,.06*H],[1.12*W,-.02*H],[T.x,T.y]],m=1-u;
+    return[m*m*m*P[0][0]+3*m*m*u*P[1][0]+3*m*u*u*P[2][0]+u*u*u*P[3][0], m*m*m*P[0][1]+3*m*m*u*P[1][1]+3*m*u*u*P[2][1]+u*u*u*P[3][1]];}
+  const prog=s=>.75*(1-(1-s)*(1-s))+.25*s;           // fast throw, glides, still has pace at the catch
+  const scaleAt=u=>1+3.1*Math.pow(1-u,1.6);           // close to the camera at release, far (logo size) at the catch
+  // seeded randoms so every frame is reproducible
+  let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const COLS=["#F2AE45","#F6C878","#F4F8F5","#E9A6BA"];
+  const sparks=Array.from({length:22},()=>{const a=rnd()*Math.PI*2,v=.5+rnd()*.9;return{vx:Math.cos(a)*v,vy:Math.sin(a)*v*.75-.25,c:COLS[rnd()*4|0],w:1.4+rnd()*1.8};});
+  const leaves=Array.from({length:9},()=>{const a=-Math.PI*(.15+rnd()*.7),v=.25+rnd()*.35;return{vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:rnd()*6,sp:(rnd()-.5)*9,c:rnd()<.5?"#83B098":"#DCEDE3",s:.6+rnd()*.6};});
+  // Munnar tea hills: four layers, back (hazy) to front (tea rows)
+  const HILLS=[{y:.70,a:.045,f:[1.3,2.9,5.1],p:[.4,1.9,.3],col:"#2E6550"},{y:.76,a:.04,f:[1.7,3.6,6.3],p:[2.2,.6,1.4],col:"#285A47"},
+    {y:.83,a:.035,f:[1.1,2.4,4.7],p:[1.1,2.7,.9],col:"#21503F"},{y:.90,a:.03,f:[.9,2.1,3.9],p:[3.1,.2,2.4],col:"#1A4234",rows:1}];
+  const hy=(L,x)=>H*L.y-S*L.a*(Math.sin(x*L.f[0]+L.p[0])+.55*Math.sin(x*L.f[1]+L.p[1])+.25*Math.sin(x*L.f[2]+L.p[2]));
+  function drawBg(t){
+    b.clearRect(0,0,W,H);
+    const g=b.createLinearGradient(0,0,0,H);g.addColorStop(0,"#16382B");g.addColorStop(.62,"#2B5E4A");g.addColorStop(1,"#2B5E4A");
+    b.fillStyle=g;b.fillRect(0,0,W,H);
+    // warm sunrise glow behind the logo, swells at the catch
+    const cx=base.x+base.w/2,cy=base.y+base.h*.45,gl=.06+.12*Math.exp(-Math.pow((t-CATCH-250)/450,2));
+    const rg=b.createRadialGradient(cx,cy,0,cx,cy,S*.75);rg.addColorStop(0,`rgba(246,214,150,${gl})`);rg.addColorStop(1,"rgba(246,214,150,0)");
+    b.fillStyle=rg;b.fillRect(0,0,W,H);
+    const sink=video?0:Math.pow(seg(t,HAND,HANDDUR),2)*H*.4;
+    HILLS.forEach((L,i)=>{
+      const off=(1-oCub(seg(t,i*80,750)))*H*.35+sink*(1+i*.15), drift=t*.00004*(i+1);
+      b.save();b.translate(0,off);b.beginPath();b.moveTo(0,H);
+      for(let x=0;x<=W+8;x+=8)b.lineTo(x,hy(L,x/W*3+drift));
+      b.lineTo(W,H);b.closePath();b.fillStyle=L.col;b.fill();
+      if(L.rows){b.clip();b.strokeStyle="rgba(131,176,152,.22)";b.lineWidth=1.4;
+        for(let k=1;k<14;k++){b.beginPath();for(let x=0;x<=W+8;x+=12){const y=hy(L,x/W*3+drift)+k*S*.014*(1+k*.08)+Math.sin(x/W*9+k)*3;x?b.lineTo(x,y):b.moveTo(x,y);}b.stroke();}}
+      b.restore();
+      if(i<3){const my=H*L.y+off+S*.02,mg=b.createLinearGradient(0,my-S*.05,0,my+S*.05);   // mist band between layers
+        mg.addColorStop(0,"rgba(220,237,227,0)");mg.addColorStop(.5,"rgba(220,237,227,.07)");mg.addColorStop(1,"rgba(220,237,227,0)");b.fillStyle=mg;b.fillRect(0,my-S*.05,W,S*.1);}
+    });
+  }
+  function drawDisc(x,y,r,ratio,bank,spin,alpha){
+    c.save();c.globalAlpha=alpha;c.translate(x,y);c.rotate(bank);
+    c.fillStyle="#B9772A";c.beginPath();c.ellipse(0,r*ratio*.22,r,r*ratio,0,0,7);c.fill();            // rim / underside
+    const g=c.createLinearGradient(0,-r*ratio,0,r*ratio);g.addColorStop(0,"#FFD58A");g.addColorStop(.55,"#F2AE45");g.addColorStop(1,"#E39A2B");
+    c.fillStyle=g;c.beginPath();c.ellipse(0,0,r,r*ratio,0,0,7);c.fill();
+    c.lineWidth=Math.max(1,r*.06);c.strokeStyle="rgba(255,255,255,.28)";c.beginPath();c.ellipse(0,0,r*.72,r*ratio*.72,0,0,7);c.stroke();
+    c.lineCap="round";c.strokeStyle="rgba(255,250,235,.85)";c.lineWidth=Math.max(1,r*.09);
+    c.beginPath();c.ellipse(0,0,r*.86,r*ratio*.86,0,spin,spin+1.1);c.stroke();                        // spinning gleam
+    c.strokeStyle="rgba(31,74,58,.55)";c.lineWidth=Math.max(1,r*.07);
+    c.beginPath();c.ellipse(0,0,r*.42,r*ratio*.42,0,spin+2.6,spin+4.1);c.stroke();                    // stamp, sells the spin
+    c.restore();
+  }
+  function drawFx(t){
+    c.clearRect(0,0,W,H);
+    const T=disc0(),s=cl(t/FLY),u=prog(s);
+    // ribbon trail: samples behind the disc, widening toward it; after the catch it retracts into the disc
+    const head=u, tailLen=.38*(1-oCub(seg(t,CATCH,380))), tail=Math.max(0,head-tailLen);
+    if(head-tail>.002&&t<CATCH+420){
+      const N=40,pts=[];for(let i=0;i<=N;i++){const v=tail+(head-tail)*i/N;pts.push([...path(v),v]);}
+      c.lineCap="round";
+      for(let pass=0;pass<2;pass++)for(let i=0;i<N;i++){
+        const k=(i+1)/N,v=pts[i+1][2],w=T.r*scaleAt(v)*(pass?.18:.95)*(.08+.92*k);
+        c.strokeStyle=pass?`rgba(255,246,225,${(k*k*.9).toFixed(3)})`:`rgba(242,174,69,${(k*k*.5).toFixed(3)})`;
+        c.lineWidth=w;c.beginPath();c.moveTo(pts[i][0],pts[i][1]);c.lineTo(pts[i+1][0],pts[i+1][1]);c.stroke();}
+    }
+    const dt=t-CATCH, bounce=dt>0?1+.2*Math.exp(-dt/110)*Math.cos(dt/38):1;
+    if(dt>0){
+      // catch: flash, two elliptical shockwaves, sparks and a few tea leaves
+      const fl=Math.exp(-dt/140),rg=c.createRadialGradient(T.x,T.y,0,T.x,T.y,T.r*9);
+      rg.addColorStop(0,`rgba(255,240,210,${.7*fl})`);rg.addColorStop(1,"rgba(255,240,210,0)");c.fillStyle=rg;c.fillRect(T.x-T.r*9,T.y-T.r*9,T.r*18,T.r*18);
+      [[0,"242,174,69",7],[90,"220,237,227",10]].forEach(([d,col,m])=>{const k=seg(dt,d,600);if(k<=0||k>=1)return;
+        const R=T.r*(1.1+m*oCub(k));c.strokeStyle=`rgba(${col},${(1-k)*.85})`;c.lineWidth=Math.max(1,T.r*.22*(1-k));
+        c.beginPath();c.ellipse(T.x,T.y,R,R*.45,0,0,7);c.stroke();});
+      const ss=dt/1000;
+      if(ss<.9){const d=(1-Math.exp(-3.2*ss))/3.2,fade=1-Math.pow(ss/.9,1.4),d0=(1-Math.exp(-3.2*Math.max(0,ss-.06)))/3.2;
+        c.lineCap="round";for(const p of sparks){c.globalAlpha=fade;c.strokeStyle=p.c;c.lineWidth=p.w;
+          c.beginPath();c.moveTo(T.x+p.vx*S*.32*d0,T.y+p.vy*S*.32*d0+S*.12*Math.pow(Math.max(0,ss-.06),2));
+          c.lineTo(T.x+p.vx*S*.32*d,T.y+p.vy*S*.32*d+S*.12*ss*ss);c.stroke();}c.globalAlpha=1;}
+      if(ss<1.6){const fade=1-Math.pow(ss/1.6,2);for(const l of leaves){const d=.06+(1-Math.exp(-2.2*ss))/2.2;
+        const x=T.x+l.vx*S*.5*d+Math.sin(ss*4+l.r)*S*.01,y=T.y+l.vy*S*.5*d+S*.09*ss*ss;
+        c.save();c.globalAlpha=fade*.9;c.translate(x,y);c.rotate(l.r+l.sp*ss);c.fillStyle=l.c;
+        c.beginPath();c.ellipse(0,0,S*.012*l.s,S*.005*l.s,0,0,7);c.fill();c.restore();}}
+    }
+    // disc: motion-blur ghosts while fast, banked into the curve, flattening as it flies away from the camera
+    const discA=1-seg(t,CATCH+450,250);
+    if(discA>0){
+      const st=(v)=>{const[x,y]=path(v),[x2,y2]=path(Math.min(1,v+.01)),bank=Math.atan2(y2-y,x2-x)*.22*Math.pow(1-v,.7);
+        return{x,y,r:T.r*scaleAt(v),ratio:.45+.14*Math.pow(1-v,1.3)+.025*Math.sin(v*14)*(1-v),bank};};
+      if(t<CATCH)for(let k=4;k>=1;k--){const v=Math.max(0,u-k*.011*(1-u*.8)),q=st(v);drawDisc(q.x,q.y,q.r,q.ratio,q.bank,t*.05-k*.35,.13*(5-k)/4);}
+      const q=st(u);
+      c.save();c.shadowColor="rgba(242,174,69,.75)";c.shadowBlur=T.r*(1.2+scaleAt(u));
+      drawDisc(q.x,q.y,q.r*bounce,q.ratio,q.bank,t*.05,discA);c.restore();
+    }
   }
   function render(t){
-    ctx.clearRect(0,0,W,H);
-    const r=S*.075;
-    // shooting-star tail: samples behind the disc, tapering and fading
-    const tailEnd=Math.min(t,FLY), tailStart=Math.max(0,t-TAIL);
-    if(tailEnd>tailStart){
-      ctx.lineCap="round";
-      for(let i=0;i<28;i++){
-        const t0=tailStart+(tailEnd-tailStart)*i/28, t1=tailStart+(tailEnd-tailStart)*(i+1)/28;
-        const age=(t-t1)/TAIL, k=1-Math.min(1,age); if(k<=0)continue;
-        const p0=path(t0/FLY),p1=path(t1/FLY);
-        ctx.strokeStyle=`rgba(${k>.6?"255,236,200":"242,174,69"},${(k*k*.85).toFixed(3)})`;
-        ctx.lineWidth=r*(.15+k*1.1)*(.55+.45*t1/FLY);
-        ctx.shadowColor="rgba(242,174,69,.6)";ctx.shadowBlur=12*k;
-        ctx.beginPath();ctx.moveTo(p0[0],p0[1]);ctx.lineTo(p1[0],p1[1]);ctx.stroke();
-      }
-      ctx.shadowBlur=0;
-    }
-    if(t<FLY){
-      const u=t/FLY,[x,y]=path(u),[x2,y2]=path(Math.min(1,u+.01));
-      disc(x,y,r*(.55+.45*u),t/55,Math.atan2(y2-y,x2-x)*.25);
-    }
-    // flash at the main burst
-    const ft=t-FLY;if(ft>=0&&ft<320){const a=1-ft/320,g=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,S*.45);
-      g.addColorStop(0,`rgba(255,240,210,${.75*a})`);g.addColorStop(1,"rgba(255,240,210,0)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
-    // fireworks: each particle draws a short streak from where it was 130ms ago
-    ctx.lineCap="round";ctx.globalCompositeOperation="lighter";
-    for(const b of bursts){const s=(t-b.t)/1000;if(s<0||s*1000>LIFE)continue;
-      const fade=1-Math.pow(s*1000/LIFE,1.6);
-      for(const q of b.p){const[a0,b0]=ppos(b,q,Math.max(0,s-.13)),[a1,b1]=ppos(b,q,s);
-        const tw=.65+.35*Math.sin(s*28+q.f);
-        ctx.globalAlpha=Math.max(0,fade*tw);ctx.strokeStyle=q.c;ctx.lineWidth=q.w;
-        ctx.beginPath();ctx.moveTo(a0,b0);ctx.lineTo(a1,b1);ctx.stroke();}
-    }
-    ctx.globalAlpha=1;ctx.globalCompositeOperation="source-over";
-    mark.classList.toggle("show",t>=LOGO);
-    intro.classList.toggle("out",t>=LOGO+HOLD);
+    drawBg(t);drawFx(t);
+    const T=disc0();
+    // logo: circular mask grows out of the caught disc, with a little settle
+    const k=seg(t,CATCH,REVEAL),R=Math.hypot(base.w,base.h)*1.05*oCub(k);
+    const mk=k>=1?"none":`radial-gradient(circle at ${(T.x-base.x).toFixed(1)}px ${(T.y-base.y).toFixed(1)}px,#000 ${Math.max(0,R-base.w*.14).toFixed(1)}px,transparent ${R.toFixed(1)}px)`;
+    mark.style.webkitMaskImage=mk;mark.style.maskImage=mk;
+    const pop=k>0?.9+.1*oBack(k):.9;
+    const ky=seg(t,CATCH+420,320);yr.style.opacity=ky;yr.style.transform=`translateY(${(1-oBack(ky))*12}px) rotate(${-10*(1-ky)}deg) scale(${.6+.4*oBack(ky)})`;
+    const h=video?0:ioCub(seg(t,HAND,HANDDUR));
+    // hand-off: the logo flies into the hero logo while the scene drops away (falls back to scale + fade if the hero logo isn't on screen)
+    let tf=`translate(${base.w*(1-pop)/2}px,${base.h*(1-pop)*.04}px) scale(${pop})`;
+    if(h>0){if(target){const sc=target.w/base.w;tf=`translate(${(target.x-base.x)*h}px,${(target.y-base.y)*h}px) scale(${1+(sc-1)*h})`;}
+      else tf=`translate(${base.w*-.1*h}px,${base.h*-.1*h}px) scale(${1+.2*h})`;}
+    logo.style.transform=tf;
+    logo.style.opacity=target?1:1-h;
+    tags.forEach((el,i)=>{const a=oCub(seg(t,CATCH+480+i*140,420)),o=1-seg(t,HAND,220);el.style.opacity=a*(video?1:o);el.style.transform=`translateY(${(1-a)*14}px)`;});
+    hint.style.opacity=.5*seg(t,450,400)*(1-seg(t,CATCH+700,300));
+    const fade=video?0:seg(t,HAND+80,HANDDUR-120);
+    bg.style.opacity=1-fade;intro.style.backgroundColor=`rgba(31,74,58,${0})`;
+    if(hero)hero.style.opacity=h>=.82?(h-.82)/.18:0;   // hero logo takes over in the last few frames
   }
-  if(freeze){mark.style.transition="none";intro.style.transition="none";render(+freeze[1]);return;}
-  const loop=now=>{start??=now;const t=now-start;render(t);if(t<LOGO+HOLD+FADE)raf=requestAnimationFrame(loop);else end();};
+  if(freeze){window.__parIntro=t=>render(t);render(+freeze[1]);return;}
+  const loop=now=>{start??=now;const t=now-start;render(t);if(t<END)raf=requestAnimationFrame(loop);else end();};
   raf=requestAnimationFrame(loop);
   // safety net: never leave the overlay up if animation frames stall (background tab, power saving)
-  setTimeout(()=>{intro.classList.add("out");setTimeout(end,FADE);},LOGO+HOLD+1500);
+  setTimeout(()=>{if(!ended){intro.classList.add("out");if(hero)hero.style.opacity="";setTimeout(end,350);}},END+1500);
 });
 document.querySelectorAll(".menu-btn").forEach(btn=>{
   const menu=btn.nextElementSibling;
