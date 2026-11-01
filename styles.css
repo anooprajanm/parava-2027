@@ -351,6 +351,72 @@ tbody tr:last-child td{border-bottom:0}
 .partner .deadline{align-self:center;color:#B9D3C3}
 footer a{transition:color .25s var(--ease)}
 
+/* ---------- gallery page: a masonry wall that keeps each photo's own shape ---------- */
+.wall{columns:3 150px;column-gap:14px}
+@media (max-width:560px){.wall{column-gap:8px}.wall figure{margin-bottom:8px;border-radius:10px}.wall figcaption{font-size:.8rem;padding:1.25rem .6rem .5rem}}
+.wall figure{position:relative;margin:0 0 14px;break-inside:avoid;border-radius:14px;overflow:hidden;cursor:zoom-in}
+.wall img{width:100%;height:auto;display:block;transition:transform .7s var(--ease)}
+.wall figcaption{position:absolute;left:0;right:0;bottom:0;padding:1.75rem .9rem .7rem;color:#fff;font-size:.9rem;background:linear-gradient(transparent,rgba(10,25,18,.7))}
+@media (hover:hover){.wall figure:hover img{transform:scale(1.03)}}
+.wall figure:focus-visible{outline:3px solid var(--disc);outline-offset:3px}
+
+/* full screen photo viewer (site.js) */
+.viewer{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(8,18,13,.94);color:#F4F8F5}
+.viewer::backdrop{background:transparent}
+.viewer[open]{display:grid;grid-template-rows:1fr auto;animation:viewer-in .35s var(--ease)}
+@keyframes viewer-in{from{opacity:0}}
+.viewer figure{margin:0;display:grid;place-items:center;min-height:0;padding:4.5rem 4.5rem 0}
+.viewer img{max-width:100%;max-height:calc(100dvh - 9.5rem);width:auto;height:auto;object-fit:contain;border-radius:10px;user-select:none;-webkit-user-drag:none}
+.viewer .bar{display:flex;justify-content:center;align-items:center;gap:1.25rem;padding:1rem 1.25rem calc(env(safe-area-inset-bottom,0px) + 1.25rem);font-size:.95rem;color:#DCEDE3}
+.viewer .count{font-variant-numeric:tabular-nums;color:#9FBCAB}
+.viewer button{position:absolute;display:grid;place-items:center;width:48px;height:48px;border-radius:999px;border:1.5px solid rgba(220,237,227,.35);background:rgba(8,18,13,.5);color:#F4F8F5;cursor:pointer;
+  transition:background-color .25s var(--ease),transform .25s var(--ease)}
+.viewer button:hover{background:rgba(220,237,227,.15)}
+.viewer button:active{transform:scale(.96)}
+.viewer button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.viewer .close{top:calc(env(safe-area-inset-top,0px) + 1rem);right:1rem}
+.viewer .prev{left:1rem;top:50%;transform:translateY(-50%)}
+.viewer .next{right:1rem;top:50%;transform:translateY(-50%)}
+.viewer .prev:active,.viewer .next:active{transform:translateY(-50%) scale(.96)}
+@media (max-width:640px){.viewer figure{padding:4.5rem .75rem 0}.viewer .prev,.viewer .next{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + .6rem);transform:none}}
+
+/* ---------- 2027: the weekend as a throw-line timeline ---------- */
+.days.timeline{position:relative;list-style:none;padding:2.25rem 0 0;margin-top:2.25rem}
+.days.timeline::before{content:"";position:absolute;left:0;right:0;top:10px;border-top:3px dashed var(--sage)}
+.timeline .day{position:relative;border-top:0;padding-top:1.5rem}
+.timeline .day::before{content:"";position:absolute;left:0;top:-2.25rem;width:26px;height:12px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 5px var(--bg)}
+.timeline .day:last-child::before{width:34px;height:15px;top:calc(-2.25rem - 2px);background:var(--disc)}
+.surface .timeline .day::before{box-shadow:0 0 0 5px var(--surface)}
+@media (max-width:860px){
+  .days.timeline{padding:0 0 0 2.25rem}
+  .days.timeline::before{left:11px;right:auto;top:6px;bottom:6px;border-top:0;border-left:3px dashed var(--sage)}
+  .timeline .day{padding-top:0}
+  .timeline .day::before{left:-2.25rem;top:.55rem}
+  .timeline .day:last-child::before{left:calc(-2.25rem - 4px);top:.5rem}
+}
+
+/* registration as a green band, the strongest call on the page */
+.reg.reg-band{border:0;background:var(--tea);color:#DCEDE3;padding:2.25rem 2.5rem;border-radius:28px;position:relative;overflow:hidden}
+.reg-band p{color:#B9D3C3}
+.reg-band b{color:#F4F8F5;font-size:clamp(1.5rem,2.6vw,2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.35rem}
+@media (max-width:560px){.reg.reg-band{padding:1.75rem 1.5rem}}
+
+/* ---------- partners: tiers as a ladder, the title slot clearly on top ---------- */
+.tiers.ladder{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:repeat(3,auto);gap:.75rem}
+.ladder .tier{border-color:rgba(220,237,227,.18);padding:1.15rem 1.35rem}
+.ladder .tier.lead{grid-row:1 / span 3;display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;border-radius:22px;min-height:260px;background:rgba(242,174,69,.16);border-color:var(--disc)}
+.ladder .tier.lead b{font-size:clamp(1.8rem,3.2vw,2.6rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem}
+.ladder .tier.lead span{font-size:1.05rem;color:#DCEDE3}
+.ladder .tier:nth-child(2){background:rgba(220,237,227,.10)}
+.ladder .tier:nth-child(3){background:rgba(220,237,227,.06)}
+.ladder .tier:nth-child(4){background:rgba(220,237,227,.03)}
+@media (max-width:860px){.tiers.ladder{grid-template-columns:1fr}.ladder .tier.lead{grid-row:auto;min-height:0}}
+
+/* ---------- volunteer: roles beside a form panel ---------- */
+.vol .split{align-items:start}
+.vol-form.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(1.25rem,3vw,2rem)}
+.vol-form.panel h3{font-size:1.5rem;margin-bottom:.25rem}
+
 /* ---------- 404 and privacy ---------- */
 .lost .pic img{object-position:50% 30%}
 .lost .big{font-family:var(--font-h);font-weight:800;font-size:clamp(4.5rem,14vw,9rem);line-height:.9;color:var(--head);letter-spacing:-.04em;margin:0 0 .5rem;font-variant-numeric:tabular-nums}

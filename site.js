@@ -38,6 +38,39 @@ document.querySelectorAll(".pagehead h1").forEach(h=>{
   draw();document.fonts&&document.fonts.ready.then(draw);
   let w=innerWidth;addEventListener("resize",()=>{if(innerWidth!==w){w=innerWidth;draw();}});
 });
+// Photo viewer: any [data-viewer] wall opens its photos full screen. Arrow keys or swipe to move, Escape to close;
+// focus goes back to the photo that was opened.
+document.querySelectorAll("[data-viewer]").forEach(wall=>{
+  const figs=[...wall.querySelectorAll("figure")];if(!figs.length)return;
+  const icon=d=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
+  const dlg=document.createElement("dialog");dlg.className="viewer";dlg.setAttribute("aria-label","Photo viewer");
+  dlg.innerHTML=`<figure><img alt=""></figure><div class="bar"><span class="cap"></span><span class="count"></span></div>`+
+    `<button class="close" type="button" aria-label="Close">${icon("M6 6l12 12M18 6L6 18")}</button>`+
+    `<button class="prev" type="button" aria-label="Previous photo">${icon("M15 5l-7 7 7 7")}</button>`+
+    `<button class="next" type="button" aria-label="Next photo">${icon("M9 5l7 7-7 7")}</button>`;
+  document.body.append(dlg);
+  const img=dlg.querySelector("img"),cap=dlg.querySelector(".cap"),count=dlg.querySelector(".count");
+  let i=0,opener=null;
+  const show=n=>{i=(n+figs.length)%figs.length;const f=figs[i],src=f.querySelector("img");
+    img.src=src.currentSrc||src.src;img.alt=src.alt;cap.textContent=f.querySelector("figcaption")?.textContent||"";count.textContent=`${i+1} / ${figs.length}`;
+    [figs[(i+1)%figs.length],figs[(i-1+figs.length)%figs.length]].forEach(x=>{const p=new Image();p.src=x.querySelector("img").src;});};
+  const open=n=>{opener=figs[n];show(n);dlg.showModal();document.documentElement.classList.add("menu-open");};
+  dlg.addEventListener("close",()=>{document.documentElement.classList.remove("menu-open");opener&&opener.focus();});
+  figs.forEach((f,n)=>{
+    const label=f.querySelector("figcaption")?.textContent||f.querySelector("img").alt;
+    f.tabIndex=0;f.setAttribute("role","button");f.setAttribute("aria-label",`Open photo: ${label}`);
+    f.addEventListener("click",()=>open(n));
+    f.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open(n);}});
+  });
+  dlg.querySelector(".close").addEventListener("click",()=>dlg.close());
+  dlg.querySelector(".prev").addEventListener("click",()=>show(i-1));
+  dlg.querySelector(".next").addEventListener("click",()=>show(i+1));
+  dlg.addEventListener("keydown",e=>{if(e.key==="ArrowRight")show(i+1);else if(e.key==="ArrowLeft")show(i-1);});
+  let x0=null,swiped=false;
+  dlg.addEventListener("click",e=>{if(!swiped&&(e.target===dlg||e.target.tagName==="FIGURE"))dlg.close();});   // a tap outside the photo closes; a swipe does not
+  dlg.addEventListener("pointerdown",e=>{x0=e.clientX;swiped=false;});
+  dlg.addEventListener("pointerup",e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;swiped=Math.abs(dx)>10;if(Math.abs(dx)>50)show(dx<0?i+1:i-1);});
+});
 // Volunteer form: inline, specific errors per field; still sends through the visitor's email app
 document.querySelectorAll(".vol-form").forEach(f=>{
   const t=f.querySelector(".toast");
