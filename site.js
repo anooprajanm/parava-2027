@@ -19,7 +19,8 @@ document.querySelectorAll(".menu-btn").forEach(btn=>{
 });
 document.querySelectorAll('a[data-ph]').forEach(a=>a.addEventListener("click",e=>e.preventDefault()));
 // Scroll reveals: sections below the first screen rise and fade in once; grid items follow each other
-if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&"IntersectionObserver" in window){
+// (the homepage opts out: its one moving element is the throw path in home.js)
+if(!document.querySelector("main.home")&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&"IntersectionObserver" in window){
   // also reveal anything already scrolled past (fast flicks, anchor jumps), so nothing can stay hidden above the viewport
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting||e.boundingClientRect.top<0){e.target.classList.add("in");io.unobserve(e.target);}}),{rootMargin:"0px 0px -8% 0px"});
   const GRIDS=".cards,.gallery,.days,.tiers,.crew,.contact-grid,.stats,.feat";

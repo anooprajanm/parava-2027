@@ -23,6 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=Gochi+Hand&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="home.css">
 <style>
 /* ---------- intro: disc is thrown past the camera, hyzers across the tea hills, is caught as the logo's own disc, logo reveals, then flies into the hero logo ---------- */
 .intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;cursor:pointer;background:#1F4A3A;
@@ -70,8 +71,8 @@
     <ul id="menu"><li><a href="about.html">About</a></li><li><a href="tournament.html">2027</a></li><li><a href="venue.html">Venue</a></li><li><a href="families.html">Families</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li><li><a href="partners.html">Partners</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li><li><a class="cta" href="tournament.html#register" data-reg>Register</a></li></ul>
   </div>
 </nav>
-<main id="main">
-<header class="hero">
+<main id="main" class="home">
+<header class="hero home-hero">
   <div class="wrap">
     <div>
       <div class="logo"><img src="assets/logo.png" alt="Parava logo"><span class="yr">’27</span></div>
@@ -81,67 +82,59 @@
       <div class="btns">
         <a class="btn btn-tea" href="tournament.html#register">Register your team</a>
         <a class="btn btn-line" href="tournament.html">See the weekend</a>
-      </div>
-      <div class="countdown" aria-label="Time until the first pull">
-        <div><b data-cd="d">--</b><small>days</small></div>
-        <div><b data-cd="h">--</b><small>hours</small></div>
-        <div><b data-cd="m">--</b><small>minutes</small></div>
+        <p class="countdown-line" data-throw="right"><b data-cd="d">--</b> days to the first pull</p>
       </div>
     </div>
-    <div class="photos">
-      <img src="assets/2026/p26-3704.jpg" fetchpriority="high" alt="A player lines up a forehand during a game">
-      <img src="assets/2026/p26-3927.jpg" alt="A disc flies past a defender's mark">
-      <img src="assets/2026/p26-3754.jpg" alt="Players on the field with tea estate slopes behind">
-      <span class="tag">see you on the field</span>
-    </div>
+    <div class="hero-photo"><img src="assets/2026/p26-3764.jpg" fetchpriority="high" alt="A team huddles on a wide field under misty hills"></div>
   </div>
   <div class="hills"><svg><use href="#hills"/></svg></div>
+  <span class="throw-note" data-at="0" data-dx="14" data-dy="-28">the pull</span>
 </header>
-<section class="numbers" aria-labelledby="num-h">
+<section class="numbers home-numbers grain" aria-labelledby="num-h">
   <div class="wrap">
     <div>
-      <p class="kicker">parava in numbers</p>
       <h2 id="num-h">One of India’s largest mixed-gender team sporting events</h2>
-      <div class="stats">
-        <div class="stat"><b>32</b><span>club teams expected in 2027</span></div>
-        <div class="stat"><b>~650</b><span>athletes over three days</span></div>
-        <div class="stat"><b>12</b><span>cities represented in 2026</span></div>
-        <div class="stat"><b>4</b><span>fields on the golf course</span></div>
+      <p class="num-line">About 650 athletes over three days, on four fields at the golf course. In 2026, teams came from 12 cities.</p>
+    </div>
+    <figure class="growth-discs-wrap">
+      <div class="growth-discs" role="img" aria-label="Teams per edition: 7 in 2024, 11 in 2025, 25 in 2026, 32 expected in 2027">
+        <div class="gd y24"><span class="d"><b data-count="7">7</b></span><small>2024</small></div>
+        <div class="gd y25"><span class="d"><b data-count="11">11</b></span><small>2025</small></div>
+        <div class="gd y26"><span class="d"><b data-count="25">25</b></span><small>2026</small></div>
+        <div class="gd y27" data-throw="top"><span class="d"><b data-count="32">32</b></span><small>2027, expected</small></div>
       </div>
-    </div>
-    <div class="growth" role="img" aria-label="Teams per edition: 7 in 2024, 11 in 2025, 25 in 2026, 32 expected in 2027">
-      <p>Teams per edition</p>
-      <div class="bar"><span>2024</span><i style="width:22%">7</i></div>
-      <div class="bar"><span>2025</span><i style="width:34%">11</i></div>
-      <div class="bar now"><span>2026</span><i style="width:78%">25</i></div>
-      <div class="bar next"><span>2027</span><i style="width:100%">32</i></div>
-      <small>2027 figure is expected, based on interest so far.</small>
+      <figcaption class="growth-note">Teams per edition. The 2027 figure is expected, based on interest so far.</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="block plan">
+  <div class="wrap">
+    <h2><span data-throw="right">Everything for the weekend</span></h2>
+    <span class="throw-note" data-at="2" data-dx="14" data-dy="-40">huck it</span>
+    <div class="plan-grid">
+      <a class="feature" href="tournament.html"><img src="assets/2026/p26-3672.jpg" alt="Two players contest a throw in a crowded field" loading="lazy"><div><b>The 2027 tournament</b><span>Schedule, teams and registration for 2–4 April.</span></div></a>
+      <ul class="plan-list">
+        <li><a href="venue.html"><img src="assets/2026/p26-3551.jpg" alt="" loading="lazy"><span><b>Venue and travel</b><small>High Range Club, getting to Munnar, where to stay.</small></span></a></li>
+        <li><a href="families.html"><img src="assets/2026/p26-3679.jpg" alt="" loading="lazy"><span><b>Bring the family</b><small>Family programme and the kids’ clinic.</small></span></a></li>
+        <li><a href="about.html"><img src="assets/2026/p26-3980.jpg" alt="" loading="lazy"><span><b>About Parava</b><small>Who we are and how ultimate works.</small></span></a></li>
+        <li><a href="volunteer.html"><img src="assets/2026/p26-4018.jpg" alt="" loading="lazy"><span><b>Volunteer</b><small>Help run the fields, helpdesk and kids’ clinic.</small></span></a></li>
+        <li><a href="partners.html"><img src="assets/2026/p26-3610.jpg" alt="" loading="lazy"><span><b>Partner with us</b><small>Title, associate, category partners and stalls.</small></span></a></li>
+      </ul>
     </div>
   </div>
 </section>
-<section class="block">
-  <div class="wrap">
-    <p class="kicker">plan your parava</p>
-    <h2>Everything for the weekend</h2>
-    <div class="cards">
-      <a class="card" href="tournament.html"><img src="assets/2026/p26-3672.jpg" alt="Two players contest a throw in a crowded field" loading="lazy"><div><b>The 2027 tournament</b><span>Schedule, teams and registration.</span></div></a>
-      <a class="card" href="venue.html"><img src="assets/2026/p26-3551.jpg" alt="An open field at High Range Club with the club bungalows behind" loading="lazy"><div><b>Venue and travel</b><span>High Range Club, getting to Munnar, where to stay.</span></div></a>
-      <a class="card" href="families.html"><img src="assets/2026/p26-3679.jpg" alt="A player relaxes in a camp chair between games" loading="lazy"><div><b>Bring the family</b><span>Family programme and the kids’ clinic.</span></div></a>
-      <a class="card" href="about.html"><img src="assets/2026/p26-3764.jpg" alt="A team huddles on a wide field under misty hills" loading="lazy"><div><b>About Parava</b><span>Who we are and how ultimate works.</span></div></a>
-      <a class="card" href="volunteer.html"><img src="assets/2026/p26-4018.jpg" alt="A volunteer with water cans waves from the sideline" loading="lazy"><div><b>Volunteer</b><span>Help run the fields, helpdesk and kids’ clinic.</span></div></a>
-      <a class="card" href="partners.html"><img src="assets/2026/p26-3610.jpg" alt="A player's jersey with the Edge Opticals sponsor logo" loading="lazy"><div><b>Partner with us</b><span>Title, associate, category partners and stalls.</span></div></a>
-    </div>
-  </div>
+<section class="tagline-band" aria-label="Parava in one line">
+  <div class="wrap"><p class="tagline"><span data-throw="left">Four fields in the hills. One weekend in the mist.</span></p></div>
 </section>
-<section class="block surface">
+<section class="block surface home-gallery">
   <div class="wrap">
-    <p class="kicker">from past editions</p>
-    <h2>Parava on the field</h2>
+    <h2><span data-throw="right">Parava on the field</span></h2>
+    <span class="throw-note" data-at="4" data-dx="-4" data-dy="-48">the catch</span>
     <div class="gallery">
-      <figure class="tall"><img src="assets/2026/p26-3723.jpg" alt="A player leaps to catch the disc" loading="lazy"><figcaption>Layout grab</figcaption></figure>
+      <figure><img src="assets/2026/p26-3723.jpg" alt="A player leaps to catch the disc" loading="lazy"><figcaption>Layout grab</figcaption></figure>
       <figure><img src="assets/2026/p26-3853.jpg" alt="A team cheers with arms raised after a game" loading="lazy"><figcaption>Spirit cheer</figcaption></figure>
+      <figure><img src="assets/2026/p26-3951.jpg" alt="Players in action beneath flowering bougainvillea" loading="lazy"><figcaption>Under the bougainvillea</figcaption></figure>
       <figure><img src="assets/2026/p26-3677.jpg" alt="A disc in flight between two players" loading="lazy"><figcaption>Disc in flight</figcaption></figure>
-      <figure class="tall"><img src="assets/2026/p26-3951.jpg" alt="Players in action beneath flowering bougainvillea" loading="lazy"><figcaption>Under the bougainvillea</figcaption></figure>
       <figure><img src="assets/2026/p26-3943.jpg" alt="A player throws past the mark" loading="lazy"><figcaption>Breaking the mark</figcaption></figure>
       <figure><img src="assets/2026/p26-4045.jpg" alt="A team huddle, one player with a fist raised" loading="lazy"><figcaption>The huddle</figcaption></figure>
     </div>
@@ -165,6 +158,7 @@
   </div>
 </footer>
 <script src="site.js"></script>
+<script src="home.js"></script>
 <script>
 // Intro: plays once per session. render(t) is a pure function of time, so #intro-t=<ms> freezes a frame for checking
 // (add &video to hold on the logo instead of handing off to the page, used to export the video version).

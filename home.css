@@ -1,0 +1,100 @@
+/* Homepage only: "the throw". One whiteboard-style flight path carries the intro's disc down the page;
+   everything around it stays quiet. Loaded after styles.css. */
+
+main.home{position:relative}
+
+/* ---------- hero ---------- */
+/* the whole hero (photo, dates, buttons, countdown) must fit the first screen on a laptop,
+   so the logo and headline scale with the viewport height as well as its width */
+.hero.home-hero{padding:1.25rem 0 6rem}
+.home-hero .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:3.5rem;align-items:center}
+.home-hero .logo{--lw:clamp(72px,12vh,118px);margin-bottom:.5rem}
+.home-hero .kicker{font-size:clamp(1.2rem,3vh,1.6rem);margin-bottom:.35rem}
+.home-hero h1{font-size:clamp(2.4rem,min(5.2vw,8vh),4.6rem);line-height:.95;letter-spacing:-.035em;max-width:13ch}
+.home-hero .when{margin-top:clamp(.75rem,2vh,1.25rem)}
+.home-hero .when strong{font-size:clamp(1.3rem,3vh,1.6rem)}
+.home-hero .btns{align-items:center;margin-top:clamp(1rem,2.6vh,1.5rem)}
+.countdown-line{margin:0 0 0 .5rem;color:var(--muted);font-size:1rem}
+.countdown-line b{font-family:var(--font-h);font-weight:800;font-size:1.6rem;color:var(--head);font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-right:.15em}
+/* the photo bleeds off the right edge; it stops just inside the hills so only its last few pixels are cut and the team stays in view */
+.hero-photo{position:relative;align-self:stretch;margin:-1.25rem calc(-1 * max(1.25rem,(100vw - 1160px) / 2)) -3rem 0;border-radius:28px 0 0 0;overflow:hidden}
+.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%}
+.home-hero .hills{height:96px}
+@media (max-width:860px){
+  .home-hero .wrap{grid-template-columns:1fr;gap:2rem}
+  .countdown-line{margin:.25rem 0 0}
+  .hero-photo{aspect-ratio:1/1;margin:0 -1.25rem -3rem;border-radius:24px 24px 0 0}
+}
+
+/* ---------- the throw ---------- */
+/* layering: section backgrounds < grain (0) < throw path (4) < content (5) < hero hills (6) < notes (7),
+   so the disc passes behind words and photos and dips behind the hills, and never covers text */
+.home > header > .wrap,.home > section > .wrap{position:relative;z-index:5}
+.home .home-hero .hills{z-index:6}
+.throw{position:absolute;left:0;top:0;width:100%;z-index:4;pointer-events:none;overflow:visible}
+.throw-line{fill:none;stroke:var(--disc);stroke-width:3;stroke-linecap:round;stroke-dasharray:11 10}
+.throw-reveal{fill:none;stroke:#fff;stroke-width:14}
+.throw-disc ellipse:first-child{fill:var(--disc)}
+.throw-disc ellipse:last-child{fill:none;stroke:#FFF6E1;stroke-width:1.6;opacity:.8}
+.throw-note{position:absolute;z-index:7;pointer-events:none;font-family:var(--font-w);font-size:1.5rem;line-height:1;color:var(--disc);
+  white-space:nowrap;transform:rotate(-5deg) translateY(6px);opacity:0;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.throw-note.on{opacity:1;transform:rotate(-5deg)}
+/* narrow layout is decided in home.js from main's width, so notes and the side line always agree */
+.throw-narrow .throw-note{display:none}
+.throw-narrow .throw-line{stroke-width:2.5}
+
+/* ---------- growth: teams per edition as discs, area in proportion to the count ---------- */
+.numbers.home-numbers{padding:5rem 0 5.5rem}
+.home-numbers .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:3rem;align-items:end}
+.home-numbers h2{max-width:16ch}
+.num-line{margin:1.25rem 0 0;color:#B9D3C3;max-width:46ch}
+.growth-discs{margin:0;display:flex;align-items:flex-end;justify-content:space-between;gap:.75rem;font-size:clamp(.62rem,1.45vw,1rem)}
+.gd{display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.gd .d{display:grid;place-items:center;border-radius:50%;background:var(--sage);color:#1C2A23;box-shadow:inset 0 0 0 .45em rgba(255,255,255,.16)}
+.gd b{font-family:var(--font-h);font-weight:800;font-size:2.1em;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.gd small{color:#B9D3C3;font-size:.95rem}
+.gd.y24 .d{width:4.9em;height:4.9em}.gd.y24 b{font-size:1.5em}
+.gd.y25 .d{width:6.1em;height:6.1em}.gd.y25 b{font-size:1.75em}
+.gd.y26 .d{width:9.3em;height:9.3em;background:var(--disc)}
+.gd.y27 .d{width:10.5em;height:10.5em;background:transparent;border:2px dashed var(--disc);color:#F4F8F5;box-shadow:none}
+.growth-note{margin:1rem 0 0;color:#9FBCAB;font-size:.875rem;text-align:right}
+@media (max-width:860px){.home-numbers .wrap{grid-template-columns:1fr}.growth-note{text-align:left}}
+
+/* faint film grain on the green band */
+.grain{position:relative}
+.grain::before{content:"";position:absolute;inset:0;z-index:0;opacity:.09;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- plan your weekend: one feature, then a plain list ---------- */
+.plan-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:2.5rem;margin-top:2.5rem;align-items:start}
+.feature{position:relative;display:block;border-radius:20px;overflow:hidden;text-decoration:none;color:#F4F8F5;aspect-ratio:5/4}
+.feature img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.feature div{position:absolute;left:0;right:0;bottom:0;padding:4rem 1.75rem 1.6rem;background:linear-gradient(transparent,rgba(10,25,18,.78))}
+.feature b{display:block;font-family:var(--font-h);font-weight:800;font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.02em;line-height:1.05}
+.feature span{display:block;margin-top:.4rem;color:#DCEDE3}
+@media (hover:hover){.feature:hover img{transform:scale(1.03)}}
+.plan-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.plan-list li{border-bottom:1px solid var(--line)}
+.plan-list a{display:grid;grid-template-columns:72px 1fr;gap:1rem;align-items:center;padding:.9rem .75rem;margin:0 -.75rem;border-radius:14px;text-decoration:none;
+  transition:background-color .25s var(--ease)}
+.plan-list a:hover{background:var(--surface)}
+.plan-list img{width:72px;height:56px;object-fit:cover;border-radius:10px}
+.plan-list b{display:block;font-family:var(--font-h);font-weight:700;font-size:1.15rem;color:var(--head)}
+.plan-list small{display:block;color:var(--muted);font-size:.95rem;line-height:1.4}
+@media (max-width:860px){.plan-grid{grid-template-columns:1fr;gap:1.5rem}}
+
+/* ---------- tagline ---------- */
+.tagline-band{padding:4.5rem 0 5rem}
+.tagline{margin:0;font-family:var(--font-h);font-weight:800;font-size:clamp(2.4rem,6.4vw,5.6rem);line-height:.98;letter-spacing:-.035em;color:var(--head);max-width:15ch}
+
+/* ---------- gallery: a less even wall ---------- */
+.home-gallery .gallery{grid-template-columns:repeat(6,1fr);grid-auto-rows:200px;
+  grid-template-areas:"a a b b c c" "a a d d c c" "e e e f f f"}
+.home-gallery .gallery figure.tall{grid-row:auto}
+.home-gallery .gallery figure:nth-child(1){grid-area:a}.home-gallery .gallery figure:nth-child(2){grid-area:b}
+.home-gallery .gallery figure:nth-child(3){grid-area:c}.home-gallery .gallery figure:nth-child(4){grid-area:d}
+.home-gallery .gallery figure:nth-child(5){grid-area:e}.home-gallery .gallery figure:nth-child(6){grid-area:f}
+@media (max-width:860px){
+  .home-gallery .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:170px;grid-template-areas:"a b" "a c" "d d" "e f"}
+}
+.growth-discs-wrap{margin:0}
