@@ -15,7 +15,7 @@ document.querySelectorAll(".menu-btn").forEach(btn=>{
   btn.addEventListener("click",()=>set(!menu.classList.contains("open")));
   menu.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>set(false)));
   addEventListener("keydown",e=>{if(e.key==="Escape"&&menu.classList.contains("open")){set(false);btn.focus();}});
-  matchMedia("(min-width:1041px)").addEventListener("change",e=>{if(e.matches)set(false);});
+  matchMedia("(min-width:1161px)").addEventListener("change",e=>{if(e.matches)set(false);});
 });
 document.querySelectorAll('a[data-ph]').forEach(a=>a.addEventListener("click",e=>e.preventDefault()));
 // Page titles: a short dashed throw from the handwritten note, over the title, landing as a disc beside it.

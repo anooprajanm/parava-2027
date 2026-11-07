@@ -63,7 +63,7 @@ section.block{padding:5.5rem 0}
 .brand b{font-family:var(--font-h);font-weight:800;font-size:1.25rem;color:var(--head)}
 .brand span{font-family:var(--font-w);color:var(--sage);font-size:1.25rem}
 .nav ul{list-style:none;display:flex;gap:.1rem;margin:0;padding:0;align-items:center}
-.nav ul a{display:block;padding:.5rem .7rem;text-decoration:none;font-weight:500;font-size:.95rem;border-radius:999px;color:var(--text);
+.nav ul a{display:block;white-space:nowrap;padding:.5rem .7rem;text-decoration:none;font-weight:500;font-size:.95rem;border-radius:999px;color:var(--text);
   transition:background-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}
 .nav ul a:hover{background:var(--mint);color:var(--tea)}
 .nav ul a:active{transform:scale(.98)}
@@ -79,7 +79,7 @@ section.block{padding:5.5rem 0}
 .menu-btn[aria-expanded="true"] .burger i:nth-child(1){transform:translateY(5px) rotate(45deg)}
 .menu-btn[aria-expanded="true"] .burger i:nth-child(2){opacity:0;transform:scaleX(.3)}
 .menu-btn[aria-expanded="true"] .burger i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
-@media (max-width:1040px){
+@media (max-width:1160px){
   .menu-btn{display:block}
   /* full height panel; links arrive in reading order, 60ms apart, capped so the sequence ends inside 400ms */
   .nav ul{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:.15rem;
