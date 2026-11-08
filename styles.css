@@ -495,3 +495,17 @@ footer a{transition:color .25s var(--ease)}
 .hof-year dt{font-family:var(--font-h);font-weight:700;color:var(--head)}
 .hof-year dd{margin:.3rem 0 0;color:var(--muted)}
 @media (max-width:760px){.hof-year{grid-template-columns:1fr}.hof-year h2{grid-row:auto}.hof-year dl{grid-template-columns:1fr;gap:.75rem}}
+
+/* footer wordmark: one big "Parava" across the footer, sized to the footer's own width */
+footer .wrap{container-type:inline-size}
+footer .wordmark{grid-column:1/-1;margin:-1rem 0 -.1em -.04em;font-family:var(--font-h);font-weight:800;letter-spacing:-.055em;line-height:.8;
+  font-size:36.5cqw;color:#2C5F4B;white-space:nowrap;user-select:none;pointer-events:none}
+footer .wordmark + .legal{border-top:0;padding-top:0;margin-top:-1.5rem}
+/* registration band on a 2026 photo; the tint keeps the text readable over the players */
+.reg.reg-photo{min-height:clamp(340px,42vw,460px);align-items:flex-end;padding:clamp(2rem,6vw,4.5rem) clamp(1.5rem,5vw,3.5rem);isolation:isolate}
+.reg-photo > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 60%;z-index:-2}
+.reg-photo::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(20,48,38,.92) 0%,rgba(20,48,38,.7) 38%,rgba(20,48,38,0) 68%),linear-gradient(0deg,rgba(20,48,38,.85) 0%,rgba(20,48,38,0) 45%)}
+.reg-photo p{color:#DCEDE3;flex:1 1 360px}
+.reg-photo b{color:#fff;font-size:clamp(1.9rem,4.6vw,3.2rem);letter-spacing:-.03em;line-height:1;margin-bottom:.6rem;max-width:14ch}
+@media (max-width:760px){.reg-photo::before{background:linear-gradient(0deg,rgba(20,48,38,.95) 0%,rgba(20,48,38,.75) 55%,rgba(20,48,38,.1) 100%)}}

@@ -100,3 +100,44 @@ main.home{position:relative}
   .home-gallery .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:170px;grid-template-areas:"a b" "a c" "d d" "e f"}
 }
 .growth-discs-wrap{margin:0}
+
+/* Munnar weather on the hero photo: sunny, misty or rainy, picked at random per visit; the note says which and a tap changes it.
+   Layers fade in once the intro has finished, pause when the photo is off screen, and hold still under reduced motion. */
+.hero-photo > img{transition:filter 1.6s var(--ease)}
+.hero-photo .wx-layer{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.6s var(--ease)}
+.hero-photo .wx-layer i{position:absolute;display:block}
+.hero-photo[data-wx="sunny"] .sunny,.hero-photo[data-wx="misty"] .misty,.hero-photo[data-wx="rainy"] .rainy{opacity:1}
+.hero-photo[data-wx="sunny"] > img{filter:saturate(1.15) brightness(1.06) contrast(1.03)}
+.hero-photo[data-wx="misty"] > img{filter:saturate(.85) brightness(1.04)}
+.hero-photo[data-wx="rainy"] > img{filter:saturate(.8) brightness(.82) contrast(1.05)}
+.sunny .warm{inset:0;background:linear-gradient(200deg,rgba(255,200,110,.22),rgba(255,200,110,0) 55%)}
+.sunny .glow{right:-18%;top:-35%;width:75%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,226,150,.85) 0%,rgba(255,200,110,.35) 30%,rgba(255,190,90,0) 65%);animation:wx-breathe 9s ease-in-out infinite alternate}
+.sunny .sweep{inset:-20% -60%;background:linear-gradient(105deg,transparent 40%,rgba(255,240,200,.22) 50%,transparent 60%);animation:wx-sweep 14s ease-in-out infinite}
+.misty .haze{inset:0;background:linear-gradient(180deg,rgba(236,242,238,.55) 0%,rgba(236,242,238,.25) 45%,rgba(236,242,238,.05) 75%)}
+.misty .bank{left:-40%;right:-40%;top:6%;height:62%;
+  background:radial-gradient(40% 35% at 20% 70%,rgba(244,248,245,.8),transparent 70%),radial-gradient(35% 30% at 55% 80%,rgba(244,248,245,.65),transparent 70%),radial-gradient(45% 40% at 85% 65%,rgba(244,248,245,.75),transparent 70%);
+  filter:blur(6px);animation:wx-drift 38s linear infinite alternate}
+.misty .bank + .bank{top:20%;opacity:.7;animation-duration:55s;animation-direction:alternate-reverse}
+.rainy .cool{inset:0;background:linear-gradient(180deg,rgba(40,62,70,.35),rgba(20,40,38,.2))}
+.rainy .sheet{inset:-50% -20%;transform:rotate(12deg);background-size:120px 160px;animation:wx-fall .7s linear infinite;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='160'%3E%3Cg stroke='white' stroke-linecap='round'%3E%3Cpath d='M10 10v18' stroke-opacity='.55'/%3E%3Cpath d='M48 70v14' stroke-opacity='.4'/%3E%3Cpath d='M86 30v20' stroke-opacity='.5'/%3E%3Cpath d='M30 110v16' stroke-opacity='.45'/%3E%3Cpath d='M104 120v12' stroke-opacity='.35'/%3E%3Cpath d='M66 140v18' stroke-opacity='.5'/%3E%3C/g%3E%3C/svg%3E")}
+.rainy .sheet + .sheet{background-size:80px 110px;opacity:.6;animation-duration:1.1s}
+.rainy .drop{top:-6%;width:7px;height:11px;border-radius:50%/60% 60% 40% 40%;box-shadow:0 0 0 1px rgba(255,255,255,.15);
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),rgba(255,255,255,.25) 45%,rgba(255,255,255,.05) 70%);animation:wx-run 7s cubic-bezier(.5,0,.8,.6) infinite}
+.rainy .drop:nth-child(4){left:22%;animation-delay:1s}
+.rainy .drop:nth-child(5){left:61%;animation-delay:3.4s;animation-duration:9s}
+.rainy .drop:nth-child(6){left:83%;animation-delay:5.2s}
+@keyframes wx-breathe{from{transform:scale(.92);opacity:.8}to{transform:scale(1.06);opacity:1}}
+@keyframes wx-sweep{0%{transform:translateX(-40%)}60%,100%{transform:translateX(40%)}}
+@keyframes wx-drift{from{transform:translateX(-12%)}to{transform:translateX(12%)}}
+@keyframes wx-fall{from{background-position:0 0}to{background-position:0 160px}}
+@keyframes wx-run{0%{top:-6%}75%{top:70%;opacity:1}100%{top:105%;opacity:0}}
+.hero-photo.off .wx-layer i{animation-play-state:paused}
+.wx-note{position:absolute;left:clamp(.75rem,2.5vw,1.5rem);top:clamp(.75rem,2.5vw,1.25rem);z-index:2;font-family:var(--font-w);font-size:clamp(1.1rem,2vw,1.35rem);line-height:1.1;color:#fff;
+  background:rgba(20,48,38,.55);border:1.5px dashed rgba(255,255,255,.55);border-radius:999px;padding:.35rem .9rem .4rem;cursor:pointer;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity 1s var(--ease) .6s,background .2s}
+.hero-photo[data-wx] .wx-note{opacity:1}
+.wx-note:hover{background:rgba(20,48,38,.75)}
+.wx-note small{font-family:var(--font-b);font-size:.62em;opacity:.8;margin-left:.4rem}
+@media (prefers-reduced-motion:reduce){.hero-photo .wx-layer i{animation:none}}
