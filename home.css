@@ -101,7 +101,7 @@ main.home{position:relative}
 }
 .growth-discs-wrap{margin:0}
 
-/* Munnar weather on the hero photo: sunny, misty or rainy, picked at random per visit; the note says which and a tap changes it.
+/* Munnar weather on the hero photo: sunny, misty or rainy, picked at random per visit; a click or tap on the photo changes it.
    Layers fade in once the intro has finished, pause when the photo is off screen, and hold still under reduced motion. */
 .hero-photo > img{transition:filter 1.6s var(--ease)}
 .hero-photo .wx-layer{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.6s var(--ease)}
@@ -134,10 +134,5 @@ main.home{position:relative}
 @keyframes wx-fall{from{background-position:0 0}to{background-position:0 160px}}
 @keyframes wx-run{0%{top:-6%}75%{top:70%;opacity:1}100%{top:105%;opacity:0}}
 .hero-photo.off .wx-layer i{animation-play-state:paused}
-.wx-note{position:absolute;left:clamp(.75rem,2.5vw,1.5rem);top:clamp(.75rem,2.5vw,1.25rem);z-index:2;font-family:var(--font-w);font-size:clamp(1.1rem,2vw,1.35rem);line-height:1.1;color:#fff;
-  background:rgba(20,48,38,.55);border:1.5px dashed rgba(255,255,255,.55);border-radius:999px;padding:.35rem .9rem .4rem;cursor:pointer;
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity 1s var(--ease) .6s,background .2s}
-.hero-photo[data-wx] .wx-note{opacity:1}
-.wx-note:hover{background:rgba(20,48,38,.75)}
-.wx-note small{font-family:var(--font-b);font-size:.62em;opacity:.8;margin-left:.4rem}
+.hero-photo[data-wx]{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.hero-photo .wx-layer i{animation:none}}

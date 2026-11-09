@@ -78,13 +78,15 @@
   io.observe(fig);
 })();
 
-// Munnar weather on the hero photo: one of three at random per visit, set once the intro has gone; the note cycles it.
-// The animation pauses while the photo is off screen.
+// Munnar weather on the hero photo: one of three at random per visit, set once the intro has gone.
+// A click or tap anywhere on the photo changes it (Enter or Space from the keyboard). The animation pauses while the photo is off screen.
 document.querySelectorAll(".hero-photo").forEach(p=>{
-  const order=["sunny","misty","rainy"],note=p.querySelector(".wx-note"),label=p.querySelector("[data-wx-label]");if(!note)return;
-  const set=w=>{p.dataset.wx=w;label.textContent=w;};
-  const start=()=>{note.hidden=false;setTimeout(()=>set(order[Math.floor(Math.random()*order.length)]));};
-  note.addEventListener("click",()=>set(order[(order.indexOf(p.dataset.wx)+1)%order.length]));
+  const order=["sunny","misty","rainy"];if(!p.querySelector(".wx-layer"))return;
+  const set=w=>{p.dataset.wx=w;p.setAttribute("aria-label",`Weather in Munnar: ${w}. Change the weather`);};
+  const next=()=>p.dataset.wx&&set(order[(order.indexOf(p.dataset.wx)+1)%order.length]);
+  const start=()=>{p.tabIndex=0;p.setAttribute("role","button");setTimeout(()=>set(order[Math.floor(Math.random()*order.length)]));};
+  p.addEventListener("click",next);
+  p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();next();}});
   const intro=document.querySelector(".intro"),gone=()=>!intro||getComputedStyle(intro).display==="none"||intro.classList.contains("out")||intro.classList.contains("done");
   if(gone())start();else{let t;const go=()=>{mo.disconnect();clearTimeout(t);setTimeout(start,400);};
     const mo=new MutationObserver(()=>{if(gone())go();});mo.observe(intro,{attributes:true,attributeFilter:["class"]});
