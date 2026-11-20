@@ -180,3 +180,9 @@ main.home{position:relative}
 /* nav logo steps aside while the hero logo is in view (home.js) */
 .nav .brand img{transition:width .4s var(--ease),margin .4s var(--ease),opacity .3s var(--ease)}
 .hero-logo-on .nav .brand img{width:0;opacity:0;margin-right:-.6rem}
+
+/* review board round 1: bigger thumbnails in the weekend list */
+.plan-list a{grid-template-columns:132px 1fr;gap:1.1rem;padding:1rem .75rem}
+.plan-list img{width:132px;height:92px;border-radius:12px}
+@media (max-width:560px){.plan-list a{grid-template-columns:104px 1fr}.plan-list img{width:104px;height:76px}}
+.munnar-band .tagline{line-height:1}
