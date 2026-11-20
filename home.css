@@ -202,3 +202,6 @@ main.home{position:relative}
 .hero-photo.film[data-wx="rainy"] .film-video{filter:saturate(.8) brightness(.82) contrast(1.05)}
 @media (max-width:640px){.film-band{min-height:clamp(380px,70svh,560px)}.film-band .film-toggle{right:1rem}}
 .hero-photo[data-wx]{cursor:auto}
+/* "one weekend in the mist." always on a single line; the type shrinks on narrow screens so it fits */
+.film-band .tagline{max-width:none;font-size:clamp(1.3rem,7.4vw,5.8rem)}
+.film-band .tagline .one-line{display:block;white-space:nowrap}
