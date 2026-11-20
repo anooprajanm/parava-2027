@@ -91,3 +91,19 @@ document.querySelectorAll(".vol-form").forEach(f=>{
     t.textContent="Your email app should open with the request ready to send.";t.classList.add("show");
   });
 });
+
+
+// Looped videos: start muted once on screen, pause off screen. Reduced motion or data saving keeps the still frame
+// until the viewer presses play. The button pauses and resumes, and a pause by the viewer sticks.
+document.querySelectorAll("video.loop").forEach(v=>{
+  const btn=v.parentElement.querySelector(".vid-toggle");
+  const calm=matchMedia("(prefers-reduced-motion: reduce)").matches||(navigator.connection&&navigator.connection.saveData);
+  let held=!!calm,seen=false;
+  const show=paused=>{if(!btn)return;btn.hidden=false;btn.classList.toggle("paused",paused);btn.setAttribute("aria-label",paused?"Play the video":"Pause the video");};
+  const play=()=>{v.preload="auto";const p=v.play();if(p&&p.catch)p.catch(()=>show(true));};
+  v.addEventListener("play",()=>show(false));v.addEventListener("pause",()=>show(true));
+  if(btn)btn.addEventListener("click",()=>{if(v.paused){held=false;play();}else{held=true;v.pause();}});
+  show(true);
+  if(!("IntersectionObserver" in window)){if(!held)play();return;}
+  new IntersectionObserver(es=>es.forEach(e=>{seen=e.isIntersecting;if(seen&&!held)play();else if(!seen&&!v.paused)v.pause();}),{threshold:.15}).observe(v);
+});

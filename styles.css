@@ -619,3 +619,18 @@ h1,h2{line-height:1}
 .pagehead .pic.portrait{align-self:center;justify-self:end;width:min(100%,360px);min-height:0;aspect-ratio:2/3;margin:0 0 -2rem;border-radius:28px}
 .pagehead .pic.portrait img{object-position:50% 50%}
 @media (max-width:860px){.pagehead .pic.portrait{justify-self:start;width:min(100%,300px);margin:0 0 -2rem}}
+
+/* ---------- looped videos (site.js plays them) ---------- */
+.vid{position:relative}
+.vid video,.vid-strip video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#2A2929}
+.pagehead .pic.vid video{border-radius:0}
+.vid-strip{position:relative;margin-top:2.5rem;border-radius:20px;overflow:hidden;aspect-ratio:21/9;max-width:100%;background:#2A2929}
+@media (max-width:640px){.vid-strip{aspect-ratio:16/10}}
+.vid-toggle{position:absolute;z-index:3;top:.8rem;right:.8rem;width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:999px;
+  background:rgba(42,41,41,.55);color:#FFF9C7;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background-color .25s var(--ease)}
+.vid-toggle:hover{background:rgba(42,41,41,.8)}
+.vid-toggle svg{width:18px;height:18px;fill:currentColor}
+.vid-toggle .i-play,.vid-toggle.paused .i-pause{display:none}
+.vid-toggle.paused .i-play{display:inline}
+.pagehead .pic.vid .vid-toggle{top:auto;bottom:6.5rem;right:1.25rem}
+@media (max-width:860px){.pagehead .pic.vid .vid-toggle{bottom:4.5rem;right:1rem}}
