@@ -591,3 +591,6 @@ footer a.btn-follow:hover{background:#fff;color:var(--ink)}
 .legal{border-top-color:rgba(42,41,41,.2);color:var(--ink)}
 footer .wordmark{color:var(--cream);font-weight:900;text-transform:lowercase;letter-spacing:-.06em;line-height:1;font-size:33cqw;margin:-.2em 0 0 -.04em;padding-bottom:.2em}
 footer .wordmark + .legal{margin-top:0}
+
+/* logo badge: the logo is mostly pale sage, so on sage bands it sits on a cream circle (sized from the logo's own width) */
+.home-hero .logo,footer .logo{box-sizing:content-box;padding:calc(var(--lw) * .14) calc(var(--lw) * .2);background:var(--cream);border-radius:50%}
