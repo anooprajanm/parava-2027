@@ -100,3 +100,20 @@ document.querySelectorAll(".hero-photo").forEach(p=>{
   if(!heroLogo||!("IntersectionObserver" in window))return;
   new IntersectionObserver(([e])=>root.classList.toggle("hero-logo-on",e.isIntersecting),{rootMargin:"-80px 0px 0px 0px"}).observe(heroLogo);
 })();
+
+
+// The Munnar film: loads only when the band is near the screen (the phone size on narrow screens), plays muted,
+// pauses off screen. Reduced motion or data saving keeps the still frame until the viewer presses play.
+(()=>{
+  const v=document.querySelector(".film-video"),btn=document.querySelector(".film-toggle");if(!v)return;
+  const calm=matchMedia("(prefers-reduced-motion: reduce)").matches||(navigator.connection&&navigator.connection.saveData);
+  let held=!!calm,loaded=false;
+  const show=paused=>{if(!btn)return;btn.hidden=false;btn.classList.toggle("paused",paused);btn.setAttribute("aria-label",paused?"Play the video":"Pause the video");};
+  const load=()=>{if(loaded)return;loaded=true;v.src=matchMedia("(max-width: 768px)").matches?v.dataset.srcNarrow:v.dataset.srcWide;};
+  const play=()=>{load();const p=v.play();if(p&&p.catch)p.catch(()=>show(true));};
+  v.addEventListener("play",()=>show(false));v.addEventListener("pause",()=>show(true));
+  if(btn)btn.addEventListener("click",e=>{e.stopPropagation();if(v.paused){held=false;play();}else{held=true;v.pause();}});
+  show(true);
+  if(!("IntersectionObserver" in window)){if(!held)play();return;}
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){if(!held)play();}else if(!v.paused)v.pause();}),{rootMargin:"200px 0px"}).observe(v.closest(".film-band"));
+})();

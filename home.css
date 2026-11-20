@@ -186,3 +186,18 @@ main.home{position:relative}
 .plan-list img{width:132px;height:92px;border-radius:12px}
 @media (max-width:560px){.plan-list a{grid-template-columns:104px 1fr}.plan-list img{width:104px;height:76px}}
 .munnar-band .tagline{line-height:1}
+
+/* ---------- the Munnar film: a full-width video band under the hero (home.js loads and plays it) ---------- */
+.film-band{position:relative;isolation:isolate;min-height:clamp(420px,80svh,820px);display:flex;align-items:flex-end;overflow:hidden;background:#2E4A3C;color:var(--cream)}
+.film-band .hero-photo.film{position:absolute;inset:0;margin:0;border-radius:0;z-index:-1;aspect-ratio:auto}
+.film-band .film-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:filter 1.6s var(--ease)}
+.film-band .hero-photo.film::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(46,74,60,.25) 0%,rgba(46,74,60,0) 35%,rgba(36,60,48,.55) 75%,rgba(30,50,40,.8) 100%)}
+.film-band .wrap{position:relative;z-index:5;padding-block:0 clamp(2.5rem,7vw,5rem);pointer-events:none}
+.film-band .tagline{color:var(--cream);font-weight:900;font-size:clamp(2.6rem,6.4vw,5.8rem);line-height:1;letter-spacing:-.05em;text-transform:lowercase;max-width:14ch;margin:0;text-shadow:0 2px 24px rgba(20,36,28,.35)}
+.film-hint{margin:1rem 0 0;font-style:italic;font-weight:500;color:#E9EEDD;font-size:.95rem}
+.film-band .film-toggle{top:auto;bottom:clamp(2.5rem,7vw,5rem);right:max(1.25rem,(100vw - 1160px) / 2)}
+.hero-photo.film[data-wx="sunny"] .film-video{filter:saturate(1.15) brightness(1.06) contrast(1.03)}
+.hero-photo.film[data-wx="misty"] .film-video{filter:saturate(.85) brightness(1.04)}
+.hero-photo.film[data-wx="rainy"] .film-video{filter:saturate(.8) brightness(.82) contrast(1.05)}
+@media (max-width:640px){.film-band{min-height:clamp(380px,70svh,560px)}.film-band .film-toggle{right:1rem}}
