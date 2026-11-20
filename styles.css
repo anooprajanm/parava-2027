@@ -594,3 +594,15 @@ footer .wordmark + .legal{margin-top:0}
 
 /* logo badge: the logo is mostly pale sage, so on sage bands it sits on a cream circle (sized from the logo's own width) */
 .home-hero .logo,footer .logo{box-sizing:content-box;padding:calc(var(--lw) * .14) calc(var(--lw) * .2);background:var(--cream);border-radius:50%}
+
+
+/* ---------- photo rows: venue, families, 2027, hall of fame ---------- */
+.photo-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:2.5rem}
+.photo-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.photo-row figure{margin:0;border-radius:16px;overflow:hidden;min-width:0}
+.photo-row img{width:100%;aspect-ratio:3/2;object-fit:cover}
+@media (max-width:640px){.photo-row{grid-template-columns:1fr 1fr}.photo-row figure:first-child{grid-column:1/-1}.photo-row.two{grid-template-columns:1fr}}
+.wide-photo{margin:2.75rem 0 0}
+.wide-photo img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:20px}
+.wide-photo figcaption{margin-top:.6rem;color:var(--muted);font-size:.92rem}
+.pagehead .pic img.pos-booth{object-position:50% 30%}
