@@ -201,3 +201,4 @@ main.home{position:relative}
 .hero-photo.film[data-wx="misty"] .film-video{filter:saturate(.85) brightness(1.04)}
 .hero-photo.film[data-wx="rainy"] .film-video{filter:saturate(.8) brightness(.82) contrast(1.05)}
 @media (max-width:640px){.film-band{min-height:clamp(380px,70svh,560px)}.film-band .film-toggle{right:1rem}}
+.hero-photo[data-wx]{cursor:auto}
