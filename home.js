@@ -93,3 +93,10 @@ document.querySelectorAll(".hero-photo").forEach(p=>{
     t=setTimeout(go,12000);}   // safety net if the intro is removed without a class change
   if("IntersectionObserver" in window)new IntersectionObserver(es=>es.forEach(e=>p.classList.toggle("off",!e.isIntersecting))).observe(p);
 });
+
+// One logo at a time: while the hero logo is on screen, the nav shows only "parava '27"; the small nav logo fades in once the hero logo has scrolled away.
+(()=>{
+  const heroLogo=document.querySelector(".home-hero .logo"),root=document.documentElement;
+  if(!heroLogo||!("IntersectionObserver" in window))return;
+  new IntersectionObserver(([e])=>root.classList.toggle("hero-logo-on",e.isIntersecting),{rootMargin:"-80px 0px 0px 0px"}).observe(heroLogo);
+})();

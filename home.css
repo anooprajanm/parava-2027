@@ -176,3 +176,7 @@ main.home{position:relative}
 .munnar-band .tagline{font-weight:900;font-size:clamp(2.2rem,4.6vw,4.2rem);line-height:.92;letter-spacing:-.045em;text-transform:lowercase;max-width:14ch}
 .munnar-band .hero-photo{margin:1.75rem 0 0;aspect-ratio:3/2;border-radius:20px;align-self:auto}
 @media (max-width:860px){.munnar-band .wrap{grid-template-columns:1fr}.munnar-band .hero-photo{margin:1.5rem 0 0;border-radius:20px}}
+
+/* nav logo steps aside while the hero logo is in view (home.js) */
+.nav .brand img{transition:width .4s var(--ease),margin .4s var(--ease),opacity .3s var(--ease)}
+.hero-logo-on .nav .brand img{width:0;opacity:0;margin-right:-.6rem}
