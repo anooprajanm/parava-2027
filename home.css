@@ -136,3 +136,43 @@ main.home{position:relative}
 .hero-photo.off .wx-layer i{animation-play-state:paused}
 .hero-photo[data-wx]{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.hero-photo .wx-layer i{animation:none}}
+
+
+/* ================= Parava 2027 look: homepage ================= */
+/* hero: the sage poster, with the disc-thrower framed on the right */
+.hero.home-hero{background:var(--band);color:var(--ink);padding:clamp(1.5rem,3vw,2.5rem) 0 clamp(2rem,5vw,4rem);overflow:hidden}
+.home-hero .wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:2.5rem;align-items:center}
+.home-hero .logo{--lw:clamp(64px,9vh,96px);margin-bottom:.9rem}
+.home-hero h1{color:var(--cream);font-size:clamp(3.4rem,min(10vw,15vh),8.4rem);line-height:.86;letter-spacing:-.05em;max-width:none}
+.home-hero h1 small{display:block;font-size:.5em;letter-spacing:-.04em;margin-top:.12em}
+.home-hero .where{margin:1rem 0 0;font-weight:900;font-size:clamp(1.3rem,2.4vw,1.75rem);letter-spacing:-.035em;line-height:1.05;text-transform:lowercase}
+.home-hero .hero-lede{margin:.9rem 0 0;max-width:40ch;font-weight:500}
+.home-hero .btn-line{border-color:var(--ink);color:var(--ink)}
+.home-hero .btn-line:hover{background:rgba(255,253,240,.35)}
+.home-hero .countdown-line,.home-hero .countdown-line b{color:var(--ink)}
+.hero-art{justify-self:end;width:100%;max-width:560px;border-radius:28px;overflow:hidden}
+.hero-art img{width:100%;height:auto}
+@media (max-width:860px){.home-hero .wrap{grid-template-columns:1fr;gap:2rem}.hero-art{justify-self:start}}
+
+/* numbers: back on the off-white, the discs in sage tints with 2027 in olive */
+.numbers.home-numbers{background:var(--bg);color:var(--text)}
+.home-numbers.grain::before{display:none}
+.home-numbers h2{color:var(--head)}
+.num-line,.gd small,.growth-note{color:var(--muted)}
+.gd .d{color:var(--ink);box-shadow:none}
+.gd.y24 .d{background:#CFDDC6}
+.gd.y25 .d{background:#AFC8B3}
+.gd.y26 .d{background:var(--sage)}
+.gd.y27 .d{background:var(--olive);border:0;color:var(--ink)}
+
+/* the throw: olive dash, notes in Satoshi italic */
+.throw-line{stroke:#B3AA1E}
+.throw-note{color:var(--kick);font-size:1.25rem}
+
+/* Munnar: tea-picker illustration beside the tagline and the weather photo */
+.munnar-band .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:center}
+.art-frame{border-radius:28px;overflow:hidden}
+.art-frame img{width:100%;height:auto}
+.munnar-band .tagline{font-weight:900;font-size:clamp(2.2rem,4.6vw,4.2rem);line-height:.92;letter-spacing:-.045em;text-transform:lowercase;max-width:14ch}
+.munnar-band .hero-photo{margin:1.75rem 0 0;aspect-ratio:3/2;border-radius:20px;align-self:auto}
+@media (max-width:860px){.munnar-band .wrap{grid-template-columns:1fr}.munnar-band .hero-photo{margin:1.5rem 0 0;border-radius:20px}}

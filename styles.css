@@ -1,13 +1,15 @@
 :root{
-  --tea:#1F4A3A; --sage:#83B098; --mint:#DCEDE3; --disc:#F2AE45; --blush:#E9A6BA;
-  --hill-1:#DFEBE3; --hill-2:#C3DACB; --hill-3:#97BEA6; --hill-4:#3E6E58;
-  --bg:#FBFCFA; --surface:#F1F6F2; --text:#1C2A23; --muted:#4F6157; --line:#D6E4DA; --head:#1F4A3A;
-  --ph-bg:#FFF1D6; --ph-line:#E39A2B; --ph-text:#8A5A12;
-  --font-h:"Bricolage Grotesque","Avenir Next","Segoe UI",sans-serif;
-  --font-b:"Figtree","Helvetica Neue",Arial,sans-serif;
-  --font-w:"Gochi Hand","Comic Sans MS",cursive;
+  /* Parava 2027 colour suite: pink, cream, blue, olive; charcoal, off-white, yellow; plus the posters' sage */
+  --band:#90B39D; --cream:#FFF9C7; --olive:#D5CC34; --yellow:#FFE95D; --ink:#2A2929; --link:#3A64A6; --kick:#4E6E5A;
+  --tea:#2A2929; --sage:#90B39D; --mint:#FFF9C7; --disc:#D5CC34; --blush:#F6CCD0;
+  --hill-1:#E9EEDD; --hill-2:#CFDDC6; --hill-3:#AFC8B3; --hill-4:#90B39D;
+  --bg:#F5F6EC; --surface:#FFFDF0; --text:#2A2929; --muted:#55584F; --line:#DCDFCF; --head:#2A2929;
+  --ph-bg:#F6CCD0; --ph-line:#C97C88; --ph-text:#2A2929;
+  --font-h:"Satoshi","Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
+  --font-b:"Satoshi","Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
+  --font-w:"Satoshi","Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
-  --err-line:#E39A2B; --err-text:#8A5A12;
+  --err-line:#C25B4A; --err-text:#8E3B2E;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -15,15 +17,15 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0E1814; --surface:#16241D; --text:#E3EDE6; --muted:#A3B8AB; --line:#27392F; --head:#DCEDE3;
-    --hill-1:#16241D; --hill-2:#1C2E25; --hill-3:#24402F; --hill-4:#2E5544;
-    --ph-bg:#3A2C10; --ph-line:#E39A2B; --ph-text:#F6C878; --err-text:#F6C878;
+    --bg:#1C201D; --surface:#252A25; --text:#F2F3E8; --muted:#B7BCAE; --line:#3A4039; --head:#F2F3E8;
+    --hill-1:#252A25; --hill-2:#2E352D; --hill-3:#3F5245; --hill-4:#4A6352;
+    --ph-bg:#F6CCD0; --ph-line:#C97C88; --ph-text:#2A2929; --err-text:#F2A493; --link:#A3BEEC; --kick:#A9C7B3;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0E1814; --surface:#16241D; --text:#E3EDE6; --muted:#A3B8AB; --line:#27392F; --head:#DCEDE3;
-  --hill-1:#16241D; --hill-2:#1C2E25; --hill-3:#24402F; --hill-4:#2E5544;
-  --ph-bg:#3A2C10; --ph-line:#E39A2B; --ph-text:#F6C878; --err-text:#F6C878;
+  --bg:#1C201D; --surface:#252A25; --text:#F2F3E8; --muted:#B7BCAE; --line:#3A4039; --head:#F2F3E8;
+  --hill-1:#252A25; --hill-2:#2E352D; --hill-3:#3F5245; --hill-4:#4A6352;
+  --ph-bg:#F6CCD0; --ph-line:#C97C88; --ph-text:#2A2929; --err-text:#F2A493; --link:#A3BEEC; --kick:#A9C7B3;
 }
 html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 96px);scroll-behavior:smooth}
 html.menu-open{overflow:hidden}
@@ -280,7 +282,7 @@ details[open] p{animation:faq-in .5s var(--ease)}
 /* every page ends the same way: the hills roll down into a tea green footer */
 footer{position:relative;background:var(--tea);color:#DCEDE3;padding:4rem 0 3rem}
 footer > .hills{bottom:100%;height:80px}
-main > section.block:last-child{padding-bottom:calc(5.5rem + 56px)}
+main > section.block:last-child{padding-bottom:5.5rem}
 main:has(> .partner:last-child) + footer > .hills,main:has(> header:last-child) + footer > .hills{display:none}
 footer .wrap{display:grid;grid-template-columns:auto 1fr 1fr;gap:3rem;align-items:start}
 footer .logo{--lw:120px}
@@ -509,3 +511,83 @@ footer .wordmark + .legal{border-top:0;padding-top:0;margin-top:-1.5rem}
 .reg-photo p{color:#DCEDE3;flex:1 1 360px}
 .reg-photo b{color:#fff;font-size:clamp(1.9rem,4.6vw,3.2rem);letter-spacing:-.03em;line-height:1;margin-bottom:.6rem;max-width:14ch}
 @media (max-width:760px){.reg-photo::before{background:linear-gradient(0deg,rgba(20,48,38,.95) 0%,rgba(20,48,38,.75) 55%,rgba(20,48,38,.1) 100%)}}
+
+
+/* =====================================================================================
+   Parava 2027 look: Satoshi throughout, the poster palette, sage bands with big lowercase headlines.
+   Loaded last so it restyles the components above without changing their layout.
+   ===================================================================================== */
+@font-face{font-family:"Satoshi";src:url(assets/fonts/satoshi-regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Satoshi";src:url(assets/fonts/satoshi-medium.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Satoshi";src:url(assets/fonts/satoshi-mediumitalic.woff2) format("woff2");font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:"Satoshi";src:url(assets/fonts/satoshi-bold.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Satoshi";src:url(assets/fonts/satoshi-black.woff2) format("woff2");font-weight:900;font-style:normal;font-display:swap}
+
+/* type: headlines lowercase and tight like the posters; running text stays in sentence case */
+h1,h2{font-weight:900;letter-spacing:-.045em;line-height:.92;text-transform:lowercase}
+h2{font-size:clamp(2.3rem,5vw,3.8rem);max-width:18ch}
+h3{font-weight:700;letter-spacing:-.02em}
+.prose h2{text-transform:none;letter-spacing:-.025em;line-height:1.1;font-weight:700}
+.pagehead h1{font-weight:900;letter-spacing:-.05em;line-height:.9}
+.kicker,.photos .tag,.throw-note,.intro-hint{font-style:italic;font-weight:500}
+.kicker{font-size:clamp(1.05rem,1.8vw,1.25rem);color:var(--kick);letter-spacing:0}
+.brand b{font-weight:900;letter-spacing:-.04em;text-transform:lowercase}
+.brand span{font-weight:900;color:var(--head);letter-spacing:-.04em}
+:focus-visible{outline-color:var(--link)}
+.tbc{border-style:dashed;font-weight:500}
+
+/* buttons: olive for the main call, charcoal outline for the rest */
+.btn-tea,.btn-disc,button.submit{background:var(--olive);color:var(--ink)}
+.btn-tea:hover,.btn-disc:hover,button.submit:hover{background:#C8BF28;color:var(--ink);box-shadow:0 10px 24px -12px rgba(42,41,41,.45)}
+.btn-line{border-color:var(--text);color:var(--text)}
+.btn-line:hover{background:var(--mint);color:var(--ink)}
+.btn.is-disabled,.btn.is-disabled:hover{background:transparent;border:2px dashed currentColor;color:inherit;opacity:1}
+.nav ul a.cta{background:var(--olive);color:var(--ink)}
+.nav ul a.cta:hover{background:#C8BF28;color:var(--ink)}
+.nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--ink)}
+.menu-btn{border-color:var(--text)}
+
+/* sage bands: big cream headline, charcoal text */
+.numbers,.partner{background:var(--band);color:var(--ink)}
+.numbers h2,.partner h2{color:var(--cream)}
+.numbers .kicker,.partner .kicker{color:var(--ink)}
+.numbers .btn-line,.partner .btn-line{border-color:var(--ink);color:var(--ink)}
+.stat b,.stats.on-light .stat b{color:var(--ink)}
+.stat span,.partner .lede,.partner .deadline{color:rgba(42,41,41,.8)}
+.growth{background:rgba(255,253,240,.28)}
+.growth p,.bar span{color:var(--ink)}
+.bar i{background:var(--cream)}
+.bar.now i{background:var(--olive)}
+.bar.next i{border-color:var(--ink);color:var(--ink)}
+.growth small{color:rgba(42,41,41,.72)}
+.tier{border-color:rgba(42,41,41,.22)}
+.tier b{color:var(--ink)}
+.tier span,.ladder .tier.lead span{color:rgba(42,41,41,.8)}
+.tier.lead,.ladder .tier.lead{background:var(--cream);border-color:var(--olive)}
+.ladder .tier:nth-child(2){background:rgba(255,253,240,.34)}
+.ladder .tier:nth-child(3){background:rgba(255,253,240,.22)}
+.ladder .tier:nth-child(4){background:rgba(255,253,240,.12)}
+.slot{border-color:rgba(42,41,41,.3);color:rgba(42,41,41,.72)}
+
+/* registration: a yellow band */
+.reg.reg-band{background:var(--yellow);color:var(--ink);align-items:flex-end}
+.reg-band p{color:var(--ink)}
+.reg-band b{color:var(--ink);font-weight:900;text-transform:lowercase;font-size:clamp(1.9rem,4.4vw,3.2rem);letter-spacing:-.045em;line-height:.95;max-width:14ch;margin-bottom:.7rem}
+.reg-band .btn.is-disabled{color:var(--ink)}
+
+/* inner page header: an illustration in place of the photo */
+.pagehead .pic.art img{object-position:45% 40%}
+
+/* footer: tea rows above a sage footer with a cream wordmark */
+.ground{height:clamp(150px,26vw,400px);background:url(assets/art/tea-rows.jpg) center top/cover;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%)}
+footer{background:var(--band);color:var(--ink);padding:3.5rem 0 2.5rem}
+footer h3{color:var(--ink)}
+footer a,footer a:hover{color:var(--ink)}
+footer .follow{border-bottom-color:rgba(42,41,41,.2)}
+footer .follow p{color:var(--ink);font-weight:900;letter-spacing:-.035em;text-transform:lowercase}
+.btn-follow,footer a.btn-follow{border-color:transparent;background:var(--cream);color:var(--ink)}
+footer a.btn-follow:hover{background:#fff;color:var(--ink)}
+.legal{border-top-color:rgba(42,41,41,.2);color:var(--ink)}
+footer .wordmark{color:var(--cream);font-weight:900;text-transform:lowercase;letter-spacing:-.06em;line-height:1;font-size:33cqw;margin:-.2em 0 0 -.04em;padding-bottom:.2em}
+footer .wordmark + .legal{margin-top:0}

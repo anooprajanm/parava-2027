@@ -20,14 +20,12 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo-2027.svg">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" as="image" href="assets/logo-2027.svg" fetchpriority="high">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=Gochi+Hand&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/satoshi-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="home.css">
 <style>
 /* ---------- intro: disc is thrown past the camera, hyzers across the tea hills, is caught as the logo's own disc, logo reveals, then flies into the hero logo ---------- */
-.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;cursor:pointer;background:#1F4A3A;
+.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;cursor:pointer;background:#90B39D;
   -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 .intro-skip .intro,.intro.done{display:none}
 .intro.out{opacity:0;visibility:hidden;transition:opacity .35s ease-in,visibility .35s}
@@ -38,9 +36,9 @@
 .intro .mark{display:block;width:100%;height:100%;object-fit:contain;-webkit-mask-image:linear-gradient(transparent,transparent);mask-image:linear-gradient(transparent,transparent)}
 .intro-tag{margin:0;text-align:center;line-height:1.25}
 .intro-tag span{display:block;opacity:0}
-.intro-tag .d{font-family:var(--font-h);font-weight:800;font-size:clamp(1.3rem,3.4vh,1.9rem);color:#F4F8F5;letter-spacing:-.01em}
-.intro-tag .v{font-family:var(--font-b);font-weight:600;font-size:clamp(.72rem,1.6vh,.9rem);color:var(--sage);letter-spacing:.18em;text-transform:uppercase;margin-top:.25rem}
-.intro-hint{position:absolute;z-index:3;right:max(1.1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));font-family:var(--font-w);font-size:1.15rem;color:#DCEDE3;opacity:0}
+.intro-tag .d{font-family:var(--font-h);font-weight:800;font-size:clamp(1.3rem,3.4vh,1.9rem);color:#2A2929;letter-spacing:-.03em;font-weight:900}
+.intro-tag .v{font-family:var(--font-b);font-weight:600;font-size:clamp(.72rem,1.6vh,.9rem);color:#2A2929;letter-spacing:.18em;text-transform:uppercase;margin-top:.25rem}
+.intro-hint{position:absolute;z-index:3;right:max(1.1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));font-family:var(--font-w);font-size:1.05rem;font-style:italic;font-weight:500;color:#2A2929;opacity:0}
 @media (prefers-reduced-motion:reduce){.intro{display:none}}
 </style>
 </head>
@@ -74,20 +72,19 @@
 <main id="main" class="home">
 <header class="hero home-hero">
   <div class="wrap">
-    <div>
+    <div class="hero-copy">
       <div class="logo"><img src="assets/logo-2027.svg" alt="Parava logo"></div>
-      <p class="kicker">the fourth edition</p>
-      <h1>Elite ultimate in the tea gardens of Munnar</h1>
-      <p class="when"><strong>2–4 April 2027</strong>High Range Club, Munnar. Hosted by KoCatchis.</p>
+      <h1>Parava 2027<small>April 2, 3, 4</small></h1>
+      <p class="where">High Range Club, Munnar</p>
+      <p class="hero-lede">The fourth edition. Elite ultimate in the tea gardens of Munnar, hosted by KoCatchis.</p>
       <div class="btns">
         <a class="btn btn-tea" href="tournament.html#register">Register your team</a>
         <a class="btn btn-line" href="tournament.html">See the weekend</a>
         <p class="countdown-line" data-throw="right"><b data-cd="d">--</b> days to the first pull</p>
       </div>
     </div>
-    <div class="hero-photo"><img src="assets/2026/p26-3764.jpg" fetchpriority="high" alt="A team huddles on a wide field under misty hills"><div class="wx-layer sunny" aria-hidden="true"><i class="warm"></i><i class="glow"></i><i class="sweep"></i></div><div class="wx-layer misty" aria-hidden="true"><i class="haze"></i><i class="bank"></i><i class="bank"></i></div><div class="wx-layer rainy" aria-hidden="true"><i class="cool"></i><i class="sheet"></i><i class="sheet"></i><i class="drop"></i><i class="drop"></i><i class="drop"></i></div></div>
+    <div class="hero-art"><img src="assets/art/thrower-sage.jpg" width="1062" height="1060" fetchpriority="high" alt="Illustration: a player throws a disc over the tea hills"></div>
   </div>
-  <div class="hills"><svg><use href="#hills"/></svg></div>
 </header>
 <section class="numbers home-numbers grain" aria-labelledby="num-h">
   <div class="wrap">
@@ -122,8 +119,14 @@
     </div>
   </div>
 </section>
-<section class="tagline-band" aria-label="Parava in one line">
-  <div class="wrap"><p class="tagline"><span data-throw="left">Four fields in the hills. One weekend in the mist.</span></p></div>
+<section class="tagline-band munnar-band" aria-label="Parava in one line">
+  <div class="wrap">
+    <div class="art-frame"><img src="assets/art/tea-picker.jpg" width="1080" height="1080" loading="lazy" alt="Illustration: a tea-picker with a disc in her basket"></div>
+    <div>
+      <p class="tagline"><span data-throw="left">Four fields in the hills. One weekend in the mist.</span></p>
+      <div class="hero-photo"><img src="assets/2026/p26-3764.jpg" loading="lazy" alt="A team huddles on a wide field under misty hills"><div class="wx-layer sunny" aria-hidden="true"><i class="warm"></i><i class="glow"></i><i class="sweep"></i></div><div class="wx-layer misty" aria-hidden="true"><i class="haze"></i><i class="bank"></i><i class="bank"></i></div><div class="wx-layer rainy" aria-hidden="true"><i class="cool"></i><i class="sheet"></i><i class="sheet"></i><i class="drop"></i><i class="drop"></i><i class="drop"></i></div></div>
+    </div>
+  </div>
 </section>
 <section class="block surface home-gallery">
   <div class="wrap">
@@ -141,8 +144,8 @@
   </div>
 </section>
 </main>
+<div class="ground" aria-hidden="true"></div>
 <footer>
-  <div class="hills" aria-hidden="true"><svg><use href="#hills"/></svg></div>
   <div class="wrap">
     <div class="follow">
       <p>Follow Parava on Instagram</p>
@@ -209,14 +212,14 @@ document.querySelectorAll(".intro").forEach(intro=>{
   let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
   const COLS=["#F2AE45","#F6C878","#F4F8F5","#E9A6BA"];
   const sparks=Array.from({length:22},()=>{const a=rnd()*Math.PI*2,v=.5+rnd()*.9;return{vx:Math.cos(a)*v,vy:Math.sin(a)*v*.75-.25,c:COLS[rnd()*4|0],w:1.4+rnd()*1.8};});
-  const leaves=Array.from({length:9},()=>{const a=-Math.PI*(.15+rnd()*.7),v=.25+rnd()*.35;return{vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:rnd()*6,sp:(rnd()-.5)*9,c:rnd()<.5?"#83B098":"#DCEDE3",s:.6+rnd()*.6};});
+  const leaves=Array.from({length:9},()=>{const a=-Math.PI*(.15+rnd()*.7),v=.25+rnd()*.35;return{vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:rnd()*6,sp:(rnd()-.5)*9,c:rnd()<.5?"#76A040":"#C9D35E",s:.6+rnd()*.6};});
   // Munnar tea hills: four layers, back (hazy) to front (tea rows)
-  const HILLS=[{y:.70,a:.045,f:[1.3,2.9,5.1],p:[.4,1.9,.3],col:"#2E6550"},{y:.76,a:.04,f:[1.7,3.6,6.3],p:[2.2,.6,1.4],col:"#285A47"},
-    {y:.83,a:.035,f:[1.1,2.4,4.7],p:[1.1,2.7,.9],col:"#21503F"},{y:.90,a:.03,f:[.9,2.1,3.9],p:[3.1,.2,2.4],col:"#1A4234",rows:1}];
+  const HILLS=[{y:.70,a:.045,f:[1.3,2.9,5.1],p:[.4,1.9,.3],col:"#C9D35E"},{y:.76,a:.04,f:[1.7,3.6,6.3],p:[2.2,.6,1.4],col:"#AFC651"},
+    {y:.83,a:.035,f:[1.1,2.4,4.7],p:[1.1,2.7,.9],col:"#93B348"},{y:.90,a:.03,f:[.9,2.1,3.9],p:[3.1,.2,2.4],col:"#76A040",rows:1}];
   const hy=(L,x)=>H*L.y-S*L.a*(Math.sin(x*L.f[0]+L.p[0])+.55*Math.sin(x*L.f[1]+L.p[1])+.25*Math.sin(x*L.f[2]+L.p[2]));
   function drawBg(t){
     b.clearRect(0,0,W,H);
-    const g=b.createLinearGradient(0,0,0,H);g.addColorStop(0,"#16382B");g.addColorStop(.62,"#2B5E4A");g.addColorStop(1,"#2B5E4A");
+    const g=b.createLinearGradient(0,0,0,H);g.addColorStop(0,"#F5F6EC");g.addColorStop(.62,"#BCD0B4");g.addColorStop(1,"#90B39D");
     b.fillStyle=g;b.fillRect(0,0,W,H);
     // warm sunrise glow behind the logo, swells at the catch
     const cx=base.x+base.w/2,cy=base.y+base.h*.45,gl=.06+.12*Math.exp(-Math.pow((t-CATCH-250)/450,2));
@@ -228,7 +231,7 @@ document.querySelectorAll(".intro").forEach(intro=>{
       b.save();b.translate(0,off);b.beginPath();b.moveTo(0,H);
       for(let x=0;x<=W+8;x+=8)b.lineTo(x,hy(L,x/W*3+drift));
       b.lineTo(W,H);b.closePath();b.fillStyle=L.col;b.fill();
-      if(L.rows){b.clip();b.strokeStyle="rgba(131,176,152,.22)";b.lineWidth=1.4;
+      if(L.rows){b.clip();b.strokeStyle="rgba(42,41,41,.12)";b.lineWidth=1.4;
         for(let k=1;k<14;k++){b.beginPath();for(let x=0;x<=W+8;x+=12){const y=hy(L,x/W*3+drift)+k*S*.014*(1+k*.08)+Math.sin(x/W*9+k)*3;x?b.lineTo(x,y):b.moveTo(x,y);}b.stroke();}}
       b.restore();
       if(i<3){const my=H*L.y+off+S*.02,mg=b.createLinearGradient(0,my-S*.05,0,my+S*.05);   // mist band between layers
