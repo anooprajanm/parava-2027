@@ -103,7 +103,8 @@ document.querySelectorAll("video.loop").forEach(v=>{
   const play=()=>{v.preload="auto";const p=v.play();if(p&&p.catch)p.catch(()=>show(true));};
   v.addEventListener("play",()=>show(false));v.addEventListener("pause",()=>show(true));
   if(btn)btn.addEventListener("click",()=>{if(v.paused){held=false;play();}else{held=true;v.pause();}});
-  show(true);
+  if(held)v.pause();
+  show(v.paused);
   if(!("IntersectionObserver" in window)){if(!held)play();return;}
   new IntersectionObserver(es=>es.forEach(e=>{seen=e.isIntersecting;if(seen&&!held)play();else if(!seen&&!v.paused)v.pause();}),{threshold:.15}).observe(v);
 });
