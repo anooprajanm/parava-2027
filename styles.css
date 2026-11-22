@@ -496,6 +496,8 @@ footer a{transition:color .25s var(--ease)}
 .hof-year dl > .champ{border-top-color:var(--disc)}
 .hof-year dt{font-family:var(--font-h);font-weight:700;color:var(--head)}
 .hof-year dd{margin:.3rem 0 0;color:var(--muted)}
+.hof-year .hof-pic{margin-top:.8rem}
+.hof-pic img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:14px;background:var(--line)}
 @media (max-width:760px){.hof-year{grid-template-columns:1fr}.hof-year h2{grid-row:auto}.hof-year dl{grid-template-columns:1fr;gap:.75rem}}
 
 /* footer wordmark: one big "Parava" across the footer, sized to the footer's own width */
